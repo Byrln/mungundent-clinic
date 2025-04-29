@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { 
-  ShoppingCart, 
   Calendar, 
   Clock, 
   Check, 
@@ -49,10 +48,7 @@ export default function NotificationsPage() {
       markAsRead(notification.id);
       
       // Handle different notification types
-      if (notification.type === "ORDER" && notification.data?.orderId) {
-        // Navigate to order details
-        window.location.href = `/admin/orders?highlight=${notification.data.orderId}`;
-      } else if (notification.type === "BOOKING" && notification.data?.bookingId) {
+      if (notification.type === "BOOKING" && notification.data?.bookingId) {
         // Navigate to booking details
         window.location.href = `/admin/bookings?highlight=${notification.data.bookingId}`;
       }
@@ -69,8 +65,6 @@ export default function NotificationsPage() {
   // Get icon based on notification type
   const getNotificationIcon = (type: NotificationType) => {
     switch (type) {
-      case "ORDER":
-        return <ShoppingCart className="w-5 h-5 text-blue-500" />;
       case "BOOKING":
         return <Calendar className="w-5 h-5 text-green-500" />;
       case "SYSTEM":
@@ -114,7 +108,6 @@ export default function NotificationsPage() {
               <SelectContent>
                 <SelectItem value="ALL">Бүх мэдэгдлүүд</SelectItem>
                 <SelectItem value="UNREAD">Уншаагүй</SelectItem>
-                <SelectItem value="ORDER">Захиалга</SelectItem>
                 <SelectItem value="BOOKING">Цаг захиалга</SelectItem>
                 <SelectItem value="SYSTEM">Систем</SelectItem>
               </SelectContent>

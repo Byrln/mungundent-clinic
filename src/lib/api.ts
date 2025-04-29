@@ -73,47 +73,6 @@ export async function fetchAuthAPI<T>(url: string, options?: RequestInit): Promi
 }
 
 /**
- * Services API
- */
-export const ServicesAPI = {
-  getAll: () => fetchAPI<any[]>('/api/services'),
-  getById: (id: string) => fetchAPI<any>(`/api/services/${id}`),
-  create: (data: any) => fetchAuthAPI<any>('/api/services', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  }),
-  update: (id: string, data: any) => fetchAuthAPI<any>(`/api/services/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  }),
-  delete: (id: string) => fetchAuthAPI<any>(`/api/services/${id}`, {
-    method: 'DELETE',
-  }),
-};
-
-/**
- * Products API
- */
-export const ProductsAPI = {
-  getAll: (inStockOnly?: boolean) => {
-    const query = inStockOnly ? '?inStock=true' : '';
-    return fetchAPI<any[]>(`/api/products${query}`);
-  },
-  getById: (id: string) => fetchAPI<any>(`/api/products/${id}`),
-  create: (data: any) => fetchAuthAPI<any>('/api/products', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  }),
-  update: (id: string, data: any) => fetchAuthAPI<any>(`/api/products/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  }),
-  delete: (id: string) => fetchAuthAPI<any>(`/api/products/${id}`, {
-    method: 'DELETE',
-  }),
-};
-
-/**
  * Bookings API
  */
 export const BookingsAPI = {
@@ -128,25 +87,6 @@ export const BookingsAPI = {
     body: JSON.stringify(data),
   }),
   delete: (id: string) => fetchAuthAPI<any>(`/api/bookings/${id}`, {
-    method: 'DELETE',
-  }),
-};
-
-/**
- * Orders API
- */
-export const OrdersAPI = {
-  getAll: () => fetchAuthAPI<any[]>('/api/orders'),
-  getById: (id: string) => fetchAuthAPI<any>(`/api/orders/${id}`),
-  create: (data: any) => fetchAPI<any>('/api/orders', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  }),
-  update: (id: string, data: any) => fetchAuthAPI<any>(`/api/orders/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  }),
-  delete: (id: string) => fetchAuthAPI<any>(`/api/orders/${id}`, {
     method: 'DELETE',
   }),
 };

@@ -1,3 +1,0 @@
-9:import { Calendar as CalendarIcon, Clock, CheckCircle, AlertCircle } from "lucide-react";
-255:                  <CalendarIcon className="text-dental-600" size={18} />
-416:                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />

@@ -288,10 +288,10 @@ export default function Home() {
       "Та манай эмнэлэгтэй доорх хаягаар холбогдох боломжтой. Бид таны асуултад хариулахад үргэлж бэлэн байна.",
     clinicInfo: {
       address:
-        "Улаанбаатар хот, Сүхбаатар дүүрэг, 1-р хороо, Чингисийн өргөн чөлөө 15, 301 тоот",
-      phone: "+976 9911 2233",
-      email: "info@mongondent.mn",
-      hours: "Даваа-Баасан: 09:00-18:00, Бямба: 10:00-15:00",
+        "Улаанбаатар хот, Хан-Уул дүүрэг, Маршал хотхон, King Tower-125",
+      phone: "+976 7720 0888",
+      email: "mungundent@gmail.com",
+      hours: "Даваа-Баасан: 09:00-18:00, Бямба: 10:00-15:00, Ням: Амарна",
     },
     mapEmbedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d504.94960863510994!2d106.92938761763024!3d47.8941491859986!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d96932b21a25bbf%3A0xf22271ea8319a1ec!2sMungun%20Dent%20-%20Family%20Dental!5e1!3m2!1smn!2smn!4v1745940598158!5m2!1smn!2smn",
@@ -398,7 +398,7 @@ export default function Home() {
                       <h3 className="font-bold text-dental-800">
                         Улаанбаатар хот
                       </h3>
-                      <p className="text-sm text-gray-600">Сүхбаатар дүүрэг</p>
+                      <p className="text-sm text-gray-600">Хан-Уул дүүрэг, Маршал хотхон, King Tower-125</p>
                     </div>
                   </div>
                 </div>
@@ -701,17 +701,6 @@ export default function Home() {
               </motion.div>
             ))}
           </motion.div>
-
-          <div className="text-center mt-12">
-            <Button asChild variant="outline">
-              <Link
-                href="/gallery"
-                className="flex items-center justify-center"
-              >
-                Бүх зургийг харах <Camera className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
         </div>
       </section>
 

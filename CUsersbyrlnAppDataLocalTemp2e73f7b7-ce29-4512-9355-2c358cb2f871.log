@@ -1,9 +1,0 @@
-
-> mungundent@0.1.0 build
-> next build
-
-   ▲ Next.js 15.3.1
-   - Environments: .env.local, .env
-
-   Creating an optimized production build ...
-uncaughtException [Error: kill EPERM] { errno: -4048, code: 'EPERM', syscall: 'kill' }

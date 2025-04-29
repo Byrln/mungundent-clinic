@@ -59,15 +59,21 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4 text-dental-800">Үйлчилгээнүүд</h3>
             <ul className="space-y-2">
-              {[
-                "Шүдний цэвэрлэгээ",
-                "Шүдний ломбо",
-                "Циркон бүрээс",
-                "Хүүхдийн эмчилгээ",
-                "Шүдний гажиг засал",
-              ].map((service, index) => (
-                <li key={index} className="text-sm text-gray-600">
-                  {service}
+              {
+              [
+                { name: "Шүдний цэвэрлэгээ", href: "/services/cleaning" },
+                { name: "Шүдний ломбо", href: "/services/filling" },
+                { name: "Циркон бүрээс", href: "/services/zircon" },
+                { name: "Хүүхдийн эмчилгээ", href: "/services/children-denistry" },
+                { name: "Урьдчилан сэргийлэх", href: "/services/preventive" },
+              ].map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-gray-600 hover:text-dental-600 transition-colors"
+                  >
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -80,16 +86,16 @@ export default function Footer() {
               <li className="flex items-start space-x-3">
                 <MapPin size={18} className="text-dental-600 mt-0.5 flex-shrink-0" />
                 <span className="text-sm text-gray-600">
-                  Улаанбаатар хот, Сүхбаатар дүүрэг
+                  Улаанбаатар хот, ХУД, Маршал хотхон
                 </span>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone size={18} className="text-dental-600 flex-shrink-0" />
-                <span className="text-sm text-gray-600">+976 99112233</span>
+                <span className="text-sm text-gray-600">+976 7720 0888</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Mail size={18} className="text-dental-600 flex-shrink-0" />
-                <span className="text-sm text-gray-600">info@mungundent.mn</span>
+                <span className="text-sm text-gray-600">mungundent@gmail.com</span>
               </li>
               <li className="flex items-start space-x-3">
                 <Clock size={18} className="text-dental-600 mt-0.5 flex-shrink-0" />
@@ -97,6 +103,8 @@ export default function Footer() {
                   Даваа - Баасан: 9:00 - 18:00
                   <br />
                   Бямба: 10:00 - 15:00
+                  <br />
+                  Ням: Амарна
                 </span>
               </li>
             </ul>

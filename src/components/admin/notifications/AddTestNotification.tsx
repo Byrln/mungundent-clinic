@@ -25,7 +25,7 @@ import { PlusCircle } from "lucide-react";
 export default function AddTestNotification() {
   const { addNotification } = useNotifications();
   const [isOpen, setIsOpen] = useState(false);
-  const [type, setType] = useState<NotificationType>("ORDER");
+  const [type, setType] = useState<NotificationType>("BOOKING");
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
   
@@ -37,9 +37,7 @@ export default function AddTestNotification() {
       type,
       title,
       message,
-      data: type === "ORDER" 
-        ? { orderId: `ORD-${Math.floor(Math.random() * 10000)}` } 
-        : type === "BOOKING" 
+      data: type === "BOOKING" 
           ? { bookingId: `BKG-${Math.floor(Math.random() * 10000)}` } 
           : {}
     };

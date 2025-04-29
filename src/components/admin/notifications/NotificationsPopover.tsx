@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
 
 // Define notification types
-export type NotificationType = "ORDER" | "BOOKING" | "SYSTEM";
+export type NotificationType = "BOOKING" | "SYSTEM";
 
 export interface Notification {
   id: string;
@@ -46,13 +46,13 @@ export default function NotificationsPopover() {
         const mockNotifications: Notification[] = [
           {
             id: "1",
-            type: "ORDER",
-            title: "Шинэ захиалга",
-            message: "Шинэ захиалга ирлээ: #ORD-2023-001",
+            type: "BOOKING",
+            title: "Шинэ цаг захиалга",
+            message: "Шинэ цаг захиалга ирлээ: #BKG-2022-001",
             isRead: false,
-            createdAt: new Date().toISOString(),
+            createdAt: new Date(Date.now() - 3600000).toISOString(),
             data: {
-              orderId: "ORD-2023-001"
+              bookingId: "BKG-2022-001"
             }
           },
           {
@@ -138,10 +138,7 @@ export default function NotificationsPopover() {
       await markAsRead(notification.id);
       
       // Handle different notification types
-      if (notification.type === "ORDER" && notification.data?.orderId) {
-        // Navigate to order details
-        window.location.href = `/admin/orders?highlight=${notification.data.orderId}`;
-      } else if (notification.type === "BOOKING" && notification.data?.bookingId) {
+      if (notification.type === "BOOKING" && notification.data?.bookingId) {
         // Navigate to booking details
         window.location.href = `/admin/bookings?highlight=${notification.data.bookingId}`;
       }
@@ -161,8 +158,6 @@ export default function NotificationsPopover() {
   // Get icon based on notification type
   const getNotificationIcon = (type: NotificationType) => {
     switch (type) {
-      case "ORDER":
-        return <ShoppingCart className="w-4 h-4 text-blue-500" />;
       case "BOOKING":
         return <Calendar className="w-4 h-4 text-green-500" />;
       case "SYSTEM":

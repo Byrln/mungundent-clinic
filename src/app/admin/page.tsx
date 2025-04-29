@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import { Card } from "@/components/ui/card";
 import DashboardStats from "@/components/admin/DashboardStats";
 import RecentBookings from "@/components/admin/RecentBookings";
-import RecentOrders from "@/components/admin/RecentOrders";
 import RecentNotifications from "@/components/admin/notifications/RecentNotifications";
 
 export const metadata: Metadata = {
@@ -21,11 +20,6 @@ export default function AdminDashboardPage() {
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Сүүлийн захиалгууд</h2>
           <RecentBookings />
-        </Card>
-        
-        <Card className="p-6">
-          <h2 className="text-xl font-semibold mb-4">Сүүлийн худалдаанууд</h2>
-          <RecentOrders />
         </Card>
       </div>
     </div>

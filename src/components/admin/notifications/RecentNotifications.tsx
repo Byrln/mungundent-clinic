@@ -28,8 +28,6 @@ export default function RecentNotifications() {
   // Get icon based on notification type
   const getNotificationIcon = (type: NotificationType) => {
     switch (type) {
-      case "ORDER":
-        return <ShoppingCart className="w-4 h-4 text-blue-500" />;
       case "BOOKING":
         return <Calendar className="w-4 h-4 text-green-500" />;
       case "SYSTEM":

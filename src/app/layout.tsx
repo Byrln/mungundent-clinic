@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { CartProvider } from "@/context/CartContext";
 import { usePathname } from "next/navigation";
 import { Providers } from "./providers";
 import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
@@ -26,11 +25,9 @@ export default function RootLayout({
     <html lang="mn">
       <body className={inter.className}>
         <Providers>
-          <CartProvider>
             {!isAdminRoute && <Navbar />}
             <main>{children}</main>
             {!isAdminRoute && <Footer />}
-          </CartProvider>
         </Providers>
       </body>
     </html>

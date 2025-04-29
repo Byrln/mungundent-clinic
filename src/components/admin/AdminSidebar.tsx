@@ -6,11 +6,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
   Calendar,
-  ShoppingBag,
-  FileText,
   Settings,
-  Package,
-  Users,
   Bell,
 } from "lucide-react";
 import { useNotifications } from "@/context/NotificationsContext";
@@ -26,16 +22,6 @@ const sidebarLinks = [
     name: "Цаг авалтууд",
     href: "/admin/bookings",
     icon: Calendar,
-  },
-  {
-    name: "Захиалгууд",
-    href: "/admin/orders",
-    icon: ShoppingBag,
-  },
-  {
-    name: "Бүтээгдэхүүн",
-    href: "/admin/products",
-    icon: Package,
   },
   {
     name: "Мэдэгдлүүд",

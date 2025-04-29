@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
-import { Notification, NotificationType } from "@/components/admin/notifications/NotificationsPopover";
+import { Notification } from "@/components/admin/notifications/NotificationsPopover";
 import { toast } from "@/hooks/use-toast";
 
 interface NotificationsContextType {
@@ -34,13 +34,13 @@ export function NotificationsProvider({ children }: { children: ReactNode }) {
           const mockNotifications: Notification[] = [
             {
               id: "1",
-              type: "ORDER",
-              title: "Шинэ захиалга",
-              message: "Шинэ захиалга ирлээ: #ORD-2023-001",
+              type: "BOOKING",
+              title: "Шинэ цаг захиалга",
+              message: "Шинэ цаг захиалга ирлээ: #BKG-2022-001",
               isRead: false,
-              createdAt: new Date().toISOString(),
+              createdAt: new Date(Date.now() - 3600000).toISOString(),
               data: {
-                orderId: "ORD-2023-001"
+                bookingId: "BKG-2022-001"
               }
             },
             {
