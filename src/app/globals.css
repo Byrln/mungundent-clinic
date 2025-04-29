@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+@layer base {
+  :root {
+    /* Base colors */
+    --background: 0 0% 100%;  /* White #FFFFFF */
+    --foreground: 0 0% 20%;   /* Charcoal Gray #333333 */
+
+    /* Card colors */
+    --card: 0 0% 100%;        /* White #FFFFFF */
+    --card-foreground: 0 0% 20%;  /* Charcoal Gray #333333 */
+ 
+    /* Popover colors */
+    --popover: 0 0% 100%;     /* White #FFFFFF */
+    --popover-foreground: 0 0% 20%;  /* Charcoal Gray #333333 */
+ 
+    /* Primary colors - Teal Blue */
+    --primary: 180 100% 36%;  /* #00B6B6 */
+    --primary-foreground: 0 0% 100%;  /* White #FFFFFF */
+ 
+    /* Secondary colors - Light Teal Tint */
+    --secondary: 180 59% 92%;  /* #E0F7F7 */
+    --secondary-foreground: 0 0% 20%;  /* Charcoal Gray #333333 */
+ 
+    /* Muted colors - Light Gray */
+    --muted: 0 0% 96%;        /* #F5F5F5 */
+    --muted-foreground: 0 0% 45%;  /* Medium Gray */
+ 
+    /* Accent colors - Sky Blue */
+    --accent: 190 100% 62%;   /* #3CDFFF */
+    --accent-foreground: 0 0% 20%;  /* Charcoal Gray #333333 */
+ 
+    /* Destructive/Error colors - Soft Red */
+    --destructive: 0 100% 71%;  /* #FF6B6B */
+    --destructive-foreground: 0 0% 100%;  /* White #FFFFFF */
+
+    /* Border, input, and ring colors */
+    --border: 0 0% 92%;       /* Light Gray #EAEAEA */
+    --input: 0 0% 92%;        /* Light Gray #EAEAEA */
+    --ring: 180 100% 36%;     /* Teal Blue #00B6B6 */
+ 
+    --radius: 1rem;           /* Increased border radius for rounded buttons */
+  }
+ 
+  .dark {
+    /* Base colors - Dark mode */
+    --background: 0 0% 15%;    /* Dark Gray */
+    --foreground: 0 0% 95%;    /* Off White */
+ 
+    /* Card colors - Dark mode */
+    --card: 0 0% 20%;          /* Slightly lighter dark gray */
+    --card-foreground: 0 0% 95%;  /* Off White */
+ 
+    /* Popover colors - Dark mode */
+    --popover: 0 0% 20%;       /* Slightly lighter dark gray */
+    --popover-foreground: 0 0% 95%;  /* Off White */
+ 
+    /* Primary colors - Teal Blue (slightly brighter for dark mode) */
+    --primary: 180 100% 40%;   /* Brighter #00CCCC */
+    --primary-foreground: 0 0% 100%;  /* White */
+ 
+    /* Secondary colors - Darker Teal */
+    --secondary: 180 100% 20%;  /* Darker Teal */
+    --secondary-foreground: 0 0% 95%;  /* Off White */
+ 
+    /* Muted colors - Dark mode */
+    --muted: 0 0% 25%;         /* Muted dark gray */
+    --muted-foreground: 0 0% 70%;  /* Light gray */
+ 
+    /* Accent colors - Brighter Sky Blue for dark mode */
+    --accent: 190 100% 70%;    /* Brighter Sky Blue */
+    --accent-foreground: 0 0% 15%;  /* Dark Gray */
+ 
+    /* Destructive/Error colors - Brighter Soft Red for dark mode */
+    --destructive: 0 100% 75%;  /* Brighter Soft Red */
+    --destructive-foreground: 0 0% 100%;  /* White */
+ 
+    /* Border, input, and ring colors - Dark mode */
+    --border: 0 0% 30%;        /* Darker gray for borders */
+    --input: 0 0% 30%;         /* Darker gray for inputs */
+    --ring: 180 100% 40%;      /* Brighter Teal Blue */
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.hero-gradient {
+  background: linear-gradient(to right, rgba(224, 247, 247, 0.9), rgba(162, 245, 195, 0.7));
+}
+
+.section-padding {
+  @apply py-16 md:py-24;
+}
+
+.container-custom {
+  @apply container mx-auto px-4 md:px-8;
+}
+
+/* Animation classes */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slide-up {
+  transform: translateY(50px);
+  opacity: 0;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.slide-up.in-view {
+  transform: translateY(0);
+  opacity: 1;
+}

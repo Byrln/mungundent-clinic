@@ -1,0 +1,19 @@
+total 66
+drwxr-xr-x 1 byrln 197609     0 Apr 29 22:31 ./
+drwxr-xr-x 1 byrln 197609     0 Apr 29 03:24 ../
+drwxr-xr-x 1 byrln 197609     0 Apr 29 22:20 about/
+drwxr-xr-x 1 byrln 197609     0 Apr 29 04:53 admin/
+drwxr-xr-x 1 byrln 197609     0 Apr 29 04:30 api/
+drwxr-xr-x 1 byrln 197609     0 Apr 27 21:28 booking/
+drwxr-xr-x 1 byrln 197609     0 Apr 27 22:48 cart/
+drwxr-xr-x 1 byrln 197609     0 Apr 27 22:48 checkout/
+drwxr-xr-x 1 byrln 197609     0 Apr 27 21:28 contact/
+drwxr-xr-x 1 byrln 197609     0 Apr 28 21:05 db-test/
+drwxr-xr-x 1 byrln 197609     0 Apr 29 22:43 doctors/
+-rw-r--r-- 1 byrln 197609  2260 Apr 27 21:05 globals.css
+-rw-r--r-- 1 byrln 197609  1062 Apr 29 21:41 layout.tsx
+-rw-r--r-- 1 byrln 197609   263 Apr 28 00:34 metadata.ts
+-rw-r--r-- 1 byrln 197609 38736 Apr 29 22:59 page.tsx
+-rw-r--r-- 1 byrln 197609   434 Apr 29 03:24 providers.tsx
+drwxr-xr-x 1 byrln 197609     0 Apr 29 21:24 services/
+drwxr-xr-x 1 byrln 197609     0 Apr 27 22:08 shop/

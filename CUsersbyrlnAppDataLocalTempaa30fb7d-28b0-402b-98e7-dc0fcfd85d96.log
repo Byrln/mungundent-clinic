@@ -1,0 +1,13 @@
+Prisma schema loaded from prisma\schema.prisma
+Environment variables loaded from .env
+Datasource "db": PostgreSQL database "dental_clinic", schema "public" at "localhost:5432"
+
+- Introspecting based on datasource defined in prisma\schema.prisma
+✖ Introspecting based on datasource defined in prisma\schema.prisma
+
+Error: P1000
+
+Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+
