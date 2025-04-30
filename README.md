@@ -30,8 +30,7 @@ npm install
 
 `.env` файл үүсгэж дараах мэдээллийг оруулна:
 
-```
-# Database connection string
+```# Database connection string
 # Using Neon PostgreSQL (cloud service) with direct connection
 DATABASE_URL="postgresql://neondb_owner:npg_fRVQr6eIDb7N@ep-falling-cell-a1i5ipmu-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
 # Admin API key for protected routes
