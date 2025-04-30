@@ -31,14 +31,18 @@ npm install
 `.env` файл үүсгэж дараах мэдээллийг оруулна:
 
 ```
-# Локал PostgreSQL ашиглах бол:
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/dental_clinic"
+# Database connection string
+# Using Neon PostgreSQL (cloud service) with direct connection
+DATABASE_URL="postgresql://neondb_owner:npg_fRVQr6eIDb7N@ep-falling-cell-a1i5ipmu-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+# Admin API key for protected routes
+ADMIN_API_KEY="mongondent-secure-api-key-2024"
 
-# Эсвэл Neon PostgreSQL ашиглах бол (зөвлөмж):
-# DATABASE_URL="postgresql://username:password@ep-some-id.region.aws.neon.tech/dbname?sslmode=require"
-
-ADMIN_API_KEY="your-secure-api-key-here"
+# Next.js environment
 NODE_ENV="development"
+
+# NextAuth.js configuration
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="this-is-a-secret-value-for-dental-clinic-app"
 ```
 
 **Neon PostgreSQL ашиглах (зөвлөмж):**
