@@ -9,30 +9,18 @@ import { useEffect, useRef, useState } from "react";
 import {
   GraduationCap,
   Award,
-  Calendar,
   CheckCircle,
   ChevronRight,
   Heart,
   Star,
   Stethoscope,
   MapPin,
-  Phone,
   Baby,
   Sparkles,
   ArrowRight,
   MessageCircle,
-  Camera,
   Facebook,
 } from "lucide-react";
-import {
-  Timeline,
-  TimelineItem,
-  TimelineIcon,
-  TimelineContent,
-  AnimatedTimeline,
-  AnimatedTimelineItem,
-} from "@/components/ui/timeline";
-
 // Import our modular sections
 import ContactSection from "@/components/sections/ContactSection";
 import CTASection from "@/components/sections/CTASection";
@@ -152,13 +140,13 @@ export default function Home() {
   // Doctor profile data
   const doctorData = {
     name: "Эмч Мөнгөнзул",
-    title: "Шүдний их эмч, Эмнэлгийн эзэмшигч",
+    title: "Шүдний их эмч, Эмнэлгийн захирал",
     description:
       "20+ жилийн туршлагатай, хүүхдэд ээлтэй, өндөр мэдрэмжтэй эмч. Монгол Улсын Анагаахын Шинжлэх Ухааны Их Сургуулийг төгссөн бөгөөд хүүхдийн шүдний эмчилгээ, циркон бүрээсний чиглэлээр мэргэшсэн.",
     image:
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=2070&auto=format&fit=crop",
+      "/images/portrait1.jpg",
     buttonText: "Дэлгэрэнгүй унших",
-    buttonLink: "/about/doctor",
+    buttonLink: "/mungunzul",
   };
 
   // Services data

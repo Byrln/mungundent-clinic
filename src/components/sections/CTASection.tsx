@@ -41,7 +41,7 @@ export default function CTASection({
             <Button asChild size="lg" className="bg-white text-dental-600 hover:bg-white/90 shadow-lg shadow-dental-700/20">
               <Link href={primaryButtonLink}>{primaryButtonText}</Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white/50 text-white hover:bg-white/20 hover:border-white/70 transition-all">
+            <Button asChild variant="outline" size="lg" className="bg-white/20 border-white/70 text-white hover:text-dental-600 transition-all">
               <Link href={secondaryButtonLink} className="flex items-center">{secondaryButtonText} <ChevronRight className="ml-2 h-4 w-4" /></Link>
             </Button>
           </div>

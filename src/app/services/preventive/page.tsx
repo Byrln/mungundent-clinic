@@ -463,9 +463,23 @@ export default function PreventiveServicePage() {
           </motion.div>
 
           <div className="text-center mt-12">
-            <p className="text-gray-600 mb-6">Бусад асуулт байвал бидэнтэй холбогдоорой</p>
-            <Button asChild size="lg" className="bg-dental-600 hover:bg-dental-700 text-white">
+            <p className="text-gray-600 mb-6">Өөр асуулт байвал бидэнтэй холбогдоорой</p>
+          </div>
+        </div>
+      </section>
+      {/* CTA Section */}
+      <section className="py-16 md:py-24 bg-gradient-to-r from-dental-500 to-[#86EFAC] text-white">
+        <div className="container mx-auto px-4 md:px-6 text-center">
+          <h2 className="text-3xl font-bold mb-6">Хүүхдийнхээ шүдний эрүүл мэндийг хамгаалъя</h2>
+          <p className="text-lg mb-8 max-w-2xl mx-auto">
+            Хүүхдийн шүдний эрүүл мэнд нь ирээдүйн эрүүл мэндийн үндэс. Одоо цаг захиалж, хүүхдийнхээ шүдний эрүүл мэндийг хамгаалаарай.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" className="bg-white text-dental-600 hover:bg-gray-100">
               <Link href="/booking">Цаг захиалах</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="bg-transparent border-white text-white hover:bg-white/10">
+              <Link href="/contact">Холбоо барих</Link>
             </Button>
           </div>
         </div>

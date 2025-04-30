@@ -469,7 +469,7 @@ export default function ZirconCrownsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-r from-dental-500 to-lavender-500 text-white">
+      <section className="py-16 md:py-24 bg-gradient-to-r from-dental-500 to-[#86EFAC] text-white">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-3xl font-bold mb-6">Циркон бүрээсний талаар илүү ихийг мэдэхийг хүсч байна уу?</h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto">

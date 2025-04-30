@@ -28,11 +28,12 @@ export default function DoctorMungunzulPage() {
       "Циркон бүрээсний мэргэшил",
       "10 гаруй жилийн туршлага"
     ],
-    imageSrc: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=2070&auto=format&fit=crop",
+    imageSrc: "/images/portrait1.jpg",
     imageAlt: "Мөнгөнзул эмч",
+    icon: Stethoscope,
     location: {
-      city: "Улаанбаатар хот",
-      district: "Сүхбаатар дүүрэг"
+      city: "Мөнгөнзул",
+      district: "Мөнгөндент-н захирал, үүсгэн байгуулагч, Ерөнхий эмч"
     },
     primaryButtonText: "Цаг захиалах",
     primaryButtonLink: "/booking",
@@ -60,7 +61,7 @@ export default function DoctorMungunzulPage() {
       },
       {
         icon: Calendar,
-        value: "2019",
+        value: "2017",
         label: "Эмнэлэг нээсэн"
       }
     ]
@@ -85,7 +86,7 @@ export default function DoctorMungunzulPage() {
         description: "Би шинэ технологи, арга барил, материалуудын талаар тасралтгүй суралцаж, мэргэжлээ дээшлүүлдэг."
       }
     ],
-    imageSrc: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=2070&auto=format&fit=crop",
+    imageSrc: "/images/portrait1.jpg",
     imageAlt: "Мөнгөнзул эмчийн зорилго",
     imageCaption: {
       title: "Таны инээмсэглэл миний зорилго",
@@ -176,24 +177,6 @@ export default function DoctorMungunzulPage() {
         description: "Мэргэжлийн гүн цэвэрлэгээ, өнгө арилгах үйлчилгээ",
         icon: <Award className="text-dental-600" size={20} />,
         slug: "cleaning"
-      },
-      {
-        name: "Шүдний ломбо",
-        description: "Өндөр чанартай, удаан эдэлгээтэй ломбоны материал",
-        icon: <Award className="text-dental-600" size={20} />,
-        slug: "filling"
-      },
-      {
-        name: "Шүдний гажиг засал",
-        description: "Шүдний эгнээ засах, гажиг засах эмчилгээ",
-        icon: <Award className="text-dental-600" size={20} />,
-        slug: "orthodontics"
-      },
-      {
-        name: "Шүдний суулгац",
-        description: "Орчин үеийн технологи ашиглан шүдний суулгац хийх",
-        icon: <Award className="text-dental-600" size={20} />,
-        slug: "implants"
       },
     ]
   };

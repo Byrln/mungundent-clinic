@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronRight, CheckCircle, Clock, Shield, Smile, Sparkles, Zap, Calendar, Stethoscope, ClipboardList, Activity, HeartPulse } from "lucide-react";
+import CTASection from "@/components/sections/CTASection";
 
 // Animation variants
 const fadeIn = {
@@ -192,6 +193,16 @@ export default function ServicesPage() {
       updatedAt: new Date().toISOString(),
     },
   ];
+  // CTA section data
+  const ctaData = {
+    title: "Мэргэжлийн шүдний эмчилгээ авахыг хүсч байна уу?",
+    description: "Надтай холбогдож, мэргэжлийн зөвлөгөө авахыг хүсвэл одоо цаг захиалаарай.",
+    primaryButtonText: "Цаг захиалах",
+    primaryButtonLink: "/booking",
+    secondaryButtonText: "Холбоо барих",
+    secondaryButtonLink: "/contact",
+    backgroundImage: "https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80&w=1974&auto=format&fit=crop"
+  };
   
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -888,30 +899,7 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-28 bg-gradient-to-r from-dental-600 to-dental-500 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80&w=1974&auto=format&fit=crop')] opacity-10 bg-cover bg-center mix-blend-overlay"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_70%)]"></div>
-        
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="inline-block px-4 py-1 mb-4 md:mb-6 rounded-full bg-white/20 text-white backdrop-blur-sm font-medium text-sm">
-              Мэргэжлийн шүдний эмнэлэг
-            </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">Эрүүл шүд, гэрэл инээмсэглэлийн төлөө</h2>
-            <p className="text-base sm:text-lg md:text-xl mb-6 md:mb-10 text-white/90 max-w-2xl mx-auto">
-              Мэргэжлийн шүдний эмчилгээ авахыг хүсч байна уу? Одоо цаг захиалаарай.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-4">
-              <Button asChild size="lg" className="bg-white text-dental-600 hover:bg-white/90 shadow-lg shadow-dental-700/20 w-full sm:w-auto">
-                <Link href="/booking" className="flex items-center justify-center">Цаг захиалах <ChevronRight className="ml-2 h-4 w-4" /></Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="border-white/50 text-white hover:bg-white/20 hover:border-white/70 transition-all w-full sm:w-auto">
-                <Link href="/contact" className="flex items-center justify-center">Холбоо барих <ChevronRight className="ml-2 h-4 w-4" /></Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CTASection {...ctaData}/>
     </>
   );
 }
