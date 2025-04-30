@@ -13,13 +13,6 @@ export async function GET(
     const product = await executeDbOperation(async () => {
       return await prisma.product.findUnique({
         where: { id },
-        include: {
-          images: {
-            orderBy: {
-              order: 'asc',
-            },
-          },
-        },
       });
     });
     
@@ -76,7 +69,7 @@ export async function PUT(
       return await prisma.product.update({
         where: { id },
         data: {
-          name,
+          title: name, // Make sure field names match the schema
           description,
           imageUrl,
           price: parseFloat(price.toString()),

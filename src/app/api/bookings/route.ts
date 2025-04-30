@@ -61,6 +61,43 @@ export async function POST(request: NextRequest) {
     
     console.log('Booking created successfully:', booking.id);
     
+    // Create a notification for the new booking
+    try {
+      // Check if the notification table exists by trying to access it
+      const notificationTableExists = await executeDbOperation(async () => {
+        try {
+          await prisma.$queryRaw`SELECT 1 FROM "Notification" LIMIT 1`;
+          return true;
+        } catch (e) {
+          return false;
+        }
+      });
+      
+      if (notificationTableExists) {
+        const notification = await executeDbOperation(async () => {
+          return prisma.notification.create({
+            data: {
+              type: 'BOOKING',
+              title: 'Шинэ цаг захиалга',
+              message: `Шинэ цаг захиалга ирлээ: ${name} (${phone})`,
+              data: {
+                bookingId: booking.id,
+                serviceType: serviceType,
+                date: bookingDate,
+                time: time
+              },
+            },
+          });
+        });
+        console.log('Notification created for booking:', notification.id);
+      } else {
+        console.log('Notification table does not exist yet, skipping notification creation');
+      }
+    } catch (notificationError) {
+      // Log but don't fail the request if notification creation fails
+      console.error('Failed to create notification for booking:', notificationError);
+    }
+    
     // Return success response
     return NextResponse.json({
       success: true,

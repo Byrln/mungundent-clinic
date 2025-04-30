@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Bell, X, Check, Clock, ShoppingCart, Calendar } from "lucide-react";
+import { useState } from "react";
+import { Bell, Check, Clock, ShoppingCart, Calendar } from "lucide-react";
 import { 
   Popover, 
   PopoverContent, 
@@ -9,18 +9,19 @@ import {
 } from "@/components/ui/popover";
 import { NotificationBadge } from "@/components/ui/notification-badge";
 import { format } from "date-fns";
-import { toast } from "@/hooks/use-toast";
+import { useNotifications } from "@/context/NotificationsContext";
 
 // Define notification types
-export type NotificationType = "BOOKING" | "SYSTEM";
+export type NotificationType = "BOOKING" | "ORDER" | "SYSTEM";
 
 export interface Notification {
   id: string;
-  type: NotificationType;
+  type: string; // Changed from NotificationType to string to match Prisma model
   title: string;
   message: string;
   isRead: boolean;
   createdAt: string;
+  updatedAt?: string;
   data?: {
     orderId?: string;
     bookingId?: string;
@@ -29,107 +30,15 @@ export interface Notification {
 }
 
 export default function NotificationsPopover() {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const unreadCount = notifications.filter(n => !n.isRead).length;
-  
-  // Fetch notifications
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        setIsLoading(true);
-        
-        // In a real app, you would fetch from an API
-        // For demo, we'll use mock data
-        const mockNotifications: Notification[] = [
-          {
-            id: "1",
-            type: "BOOKING",
-            title: "Шинэ цаг захиалга",
-            message: "Шинэ цаг захиалга ирлээ: #BKG-2022-001",
-            isRead: false,
-            createdAt: new Date(Date.now() - 3600000).toISOString(),
-            data: {
-              bookingId: "BKG-2022-001"
-            }
-          },
-          {
-            id: "2",
-            type: "BOOKING",
-            title: "Шинэ цаг захиалга",
-            message: "Шинэ цаг захиалга ирлээ: #BKG-2023-001",
-            isRead: false,
-            createdAt: new Date(Date.now() - 3600000).toISOString(),
-            data: {
-              bookingId: "BKG-2023-001"
-            }
-          },
-          {
-            id: "3",
-            type: "SYSTEM",
-            title: "Системийн мэдэгдэл",
-            message: "Системийн шинэчлэлт хийгдлээ",
-            isRead: true,
-            createdAt: new Date(Date.now() - 86400000).toISOString()
-          }
-        ];
-        
-        setNotifications(mockNotifications);
-      } catch (error) {
-        console.error("Failed to fetch notifications:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    fetchNotifications();
-  }, []);
-  
-  // Mark notification as read
-  const markAsRead = async (id: string) => {
-    try {
-      // In a real app, you would call an API
-      setNotifications(prev => 
-        prev.map(notification => 
-          notification.id === id 
-            ? { ...notification, isRead: true } 
-            : notification
-        )
-      );
-    } catch (error) {
-      console.error("Failed to mark notification as read:", error);
-      toast({
-        title: "Алдаа",
-        description: "Мэдэгдлийг уншсан гэж тэмдэглэхэд алдаа гарлаа",
-        variant: "destructive",
-      });
-    }
-  };
-  
-  // Mark all as read
-  const markAllAsRead = async () => {
-    try {
-      // In a real app, you would call an API
-      setNotifications(prev => 
-        prev.map(notification => ({ ...notification, isRead: true }))
-      );
-      
-      toast({
-        title: "Амжилттай",
-        description: "Бүх мэдэгдлийг уншсан гэж тэмдэглэлээ",
-        variant: "default",
-      });
-    } catch (error) {
-      console.error("Failed to mark all notifications as read:", error);
-      toast({
-        title: "Алдаа",
-        description: "Бүх мэдэгдлийг уншсан гэж тэмдэглэхэд алдаа гарлаа",
-        variant: "destructive",
-      });
-    }
-  };
+  const { 
+    notifications, 
+    unreadCount, 
+    markAsRead, 
+    markAllAsRead, 
+    loading: isLoading,
+    refreshNotifications
+  } = useNotifications();
   
   // Handle notification action
   const handleAction = async (notification: Notification) => {
@@ -141,17 +50,15 @@ export default function NotificationsPopover() {
       if (notification.type === "BOOKING" && notification.data?.bookingId) {
         // Navigate to booking details
         window.location.href = `/admin/bookings?highlight=${notification.data.bookingId}`;
+      } else if (notification.type === "ORDER" && notification.data?.orderId) {
+        // Navigate to order details
+        window.location.href = `/admin/orders?highlight=${notification.data.orderId}`;
       }
       
       // Close popover
       setIsOpen(false);
     } catch (error) {
       console.error("Failed to handle notification action:", error);
-      toast({
-        title: "Алдаа",
-        description: "Мэдэгдлийн үйлдлийг гүйцэтгэхэд алдаа гарлаа",
-        variant: "destructive",
-      });
     }
   };
   
@@ -160,6 +67,8 @@ export default function NotificationsPopover() {
     switch (type) {
       case "BOOKING":
         return <Calendar className="w-4 h-4 text-green-500" />;
+      case "ORDER":
+        return <ShoppingCart className="w-4 h-4 text-blue-500" />;
       case "SYSTEM":
         return <Clock className="w-4 h-4 text-yellow-500" />;
       default:
@@ -167,8 +76,24 @@ export default function NotificationsPopover() {
     }
   };
   
+  // Track last refresh time
+  const [lastPopoverRefresh, setLastPopoverRefresh] = useState(0);
+  
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
+    <Popover open={isOpen} onOpenChange={(open) => {
+      setIsOpen(open);
+      if (open) {
+        // Only refresh if it's been at least 5 seconds since last refresh
+        const now = Date.now();
+        if (now - lastPopoverRefresh > 5000) {
+          console.log('Refreshing notifications on popover open');
+          refreshNotifications();
+          setLastPopoverRefresh(now);
+        } else {
+          console.log('Skipping refresh - too soon since last refresh');
+        }
+      }
+    }}>
       <PopoverTrigger asChild>
         <button className="relative p-2 text-gray-600 hover:text-gray-900 focus:outline-none">
           <Bell className="w-5 h-5" />
@@ -209,7 +134,7 @@ export default function NotificationsPopover() {
                 >
                   <div className="flex items-start">
                     <div className="flex-shrink-0 mr-3 mt-1">
-                      {getNotificationIcon(notification.type)}
+                      {getNotificationIcon(notification.type as NotificationType)}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">

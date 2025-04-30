@@ -15,13 +15,6 @@ export async function GET(request: NextRequest) {
     const products = await executeDbOperation(async () => {
       return await prisma.product.findMany({
         where,
-        include: {
-          images: {
-            orderBy: {
-              order: 'asc',
-            },
-          },
-        },
         orderBy: {
           createdAt: 'desc',
         },
@@ -62,7 +55,7 @@ export async function POST(request: NextRequest) {
     if (!name || !description || price === undefined) {
       console.error('Validation error: Missing required fields');
       return NextResponse.json(
-        { error: 'Name, description, and price are required' },
+        { error: 'Title, description, and price are required' },
         { status: 400 }
       );
     }
@@ -86,7 +79,7 @@ export async function POST(request: NextRequest) {
     }
     
     console.log('Creating product with data:', {
-      name,
+      title: name,
       description: description.substring(0, 20) + '...',
       imageUrl: imageUrl || 'none',
       price: numericPrice,
@@ -97,7 +90,7 @@ export async function POST(request: NextRequest) {
       // Create the product directly without using executeDbOperation
       const product = await prisma.product.create({
         data: {
-          name,
+          title: name, // Schema uses 'title' instead of 'name'
           description,
           imageUrl,
           price: numericPrice,
@@ -117,7 +110,7 @@ export async function POST(request: NextRequest) {
         // Handle specific Prisma error codes
         if (dbError.code === 'P2002') {
           return NextResponse.json(
-            { error: 'A product with this name already exists' },
+            { error: 'A product with this title already exists' },
             { status: 409 }
           );
         }

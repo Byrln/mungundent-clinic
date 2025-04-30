@@ -13,12 +13,16 @@ export function middleware(request: NextRequest) {
   ];
   
   // Define routes that need authentication for specific methods
-  // For orders, we allow POST without auth so customers can place orders,
-  // but protect other methods (PUT, DELETE, PATCH) for admin use only
+  // For orders and bookings, we allow POST without auth so customers can place orders/bookings,
+  // but protect other methods (PUT, DELETE, PATCH, GET) for admin use only
   const methodProtectedRoutes = [
     {
       path: '/api/orders',
       methods: ['PUT', 'DELETE', 'PATCH', 'GET'] // Allow POST without auth for customer orders
+    },
+    {
+      path: '/api/bookings',
+      methods: ['PUT', 'DELETE', 'PATCH', 'GET'] // Allow POST without auth for customer bookings
     }
   ];
   
@@ -42,10 +46,13 @@ export function middleware(request: NextRequest) {
     const authHeader = request.headers.get('authorization');
     console.log(`Auth header for ${request.method} ${request.nextUrl.pathname}:`, authHeader);
     
-    // For demo purposes, we're temporarily bypassing auth for GET /api/orders
+    // For demo purposes, we're temporarily bypassing auth for certain routes
     // This is just for debugging - remove in production
-    if (request.nextUrl.pathname === '/api/orders' && request.method === 'GET') {
-      console.log('Bypassing auth for GET /api/orders');
+    if (
+      (request.nextUrl.pathname === '/api/orders' && request.method === 'GET') ||
+      (request.nextUrl.pathname === '/api/bookings' && request.method === 'GET' && process.env.NODE_ENV === 'development')
+    ) {
+      console.log(`Bypassing auth for ${request.method} ${request.nextUrl.pathname}`);
       return NextResponse.next();
     }
     

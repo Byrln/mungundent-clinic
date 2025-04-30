@@ -12,7 +12,8 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "setup-and-seed": "npm run setup-db && npm run seed-db"
+    "setup-and-seed": "node scripts/setup-and-seed.js",
+    "seed-orders": "node scripts/seed-orders.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -34,10 +35,14 @@
     "lucide-react": "^0.331.0",
     "next": "15.3.1",
     "next-auth": "^4.24.11",
+    "pusher": "^5.2.0",
+    "pusher-js": "^8.4.0",
     "react": "^18.2.0",
     "react-day-picker": "^8.10.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^9.0.1",

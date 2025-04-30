@@ -28,6 +28,7 @@ interface Booking {
 export default function BookingsTable() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -36,34 +37,46 @@ export default function BookingsTable() {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        // In a real application, you would fetch this data from your API
-        // For now, we'll use mock data
+        setLoading(true);
+        setError(null);
         
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Get the authentication token from localStorage
+        const token = localStorage.getItem('admin-token');
         
-        const mockBookings = Array.from({ length: 25 }, (_, i) => {
-          const date = new Date();
-          date.setDate(date.getDate() + i % 14); // Spread over 2 weeks
-          
-          return {
-            id: `booking-${i + 1}`,
-            name: `Patient ${i + 1}`,
-            phone: `+1 (555) ${100 + i}-${1000 + i}`,
-            serviceType: i % 5 === 0 ? "Dental Checkup" : 
-                         i % 5 === 1 ? "Teeth Cleaning" : 
-                         i % 5 === 2 ? "Root Canal" : 
-                         i % 5 === 3 ? "Teeth Whitening" : "Dental Implant",
-            date: date.toISOString(),
-            time: `${9 + (i % 8)}:${i % 2 === 0 ? '00' : '30'} ${i % 8 < 3 ? 'AM' : 'PM'}`,
-            message: i % 3 === 0 ? "Please call me to confirm the appointment" : undefined,
-          };
+        // Fetch real booking data from the API with authentication
+        const response = await fetch('/api/bookings', {
+          headers: {
+            'Content-Type': 'application/json',
+            // Add the authentication header
+            'Authorization': `Bearer ${token || 'demo-api-key'}`,
+          },
         });
         
-        setBookings(mockBookings);
-        setLoading(false);
-      } catch (error) {
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `Error fetching bookings: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Fetched bookings from API:', data);
+        
+        // Transform the data to match our component's expected format
+        const formattedBookings = data.map((booking: any) => ({
+          id: booking.id,
+          name: booking.name,
+          phone: booking.phone,
+          serviceType: booking.serviceType,
+          date: booking.date, // API returns ISO string
+          time: booking.time,
+          message: booking.message || undefined,
+        }));
+        
+        setBookings(formattedBookings);
+      } catch (error: any) {
         console.error("Error fetching bookings:", error);
+        setError(error.message || "Failed to load bookings. Please try again.");
+        setBookings([]); // Clear any previous data
+      } finally {
         setLoading(false);
       }
     };
@@ -79,7 +92,7 @@ export default function BookingsTable() {
       booking.phone.includes(searchTerm);
       
     const matchesDate = selectedDate === null || 
-      format(new Date(booking.date), "YYYY-MM-DD") === selectedDate;
+      format(new Date(booking.date), "yyyy-MM-dd") === selectedDate;
       
     return matchesSearch && matchesDate;
   });
@@ -111,28 +124,98 @@ export default function BookingsTable() {
     setIsDeleteModalOpen(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (selectedBooking) {
-      // In a real application, you would call an API to delete the booking
-      // For demo purposes, we'll just remove it from the local state
-      setBookings(bookings.filter(b => b.id !== selectedBooking.id));
-      setIsDeleteModalOpen(false);
-      setSelectedBooking(null);
+      try {
+        // Get the authentication token
+        const token = localStorage.getItem('admin-token') || 'demo-api-key';
+        
+        // Call the API to delete the booking
+        const response = await fetch(`/api/bookings/${selectedBooking.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `Error deleting booking: ${response.status}`);
+        }
+        
+        // Remove from local state after successful API call
+        setBookings(bookings.filter(b => b.id !== selectedBooking.id));
+        setIsDeleteModalOpen(false);
+        setSelectedBooking(null);
+      } catch (error: any) {
+        console.error("Error deleting booking:", error);
+        alert(`Failed to delete booking: ${error.message}`);
+      }
     }
   };
 
-  const saveBooking = (updatedBooking: Booking) => {
-    // In a real application, you would call an API to update the booking
-    // For demo purposes, we'll just update the local state
-    setBookings(bookings.map(b => 
-      b.id === updatedBooking.id ? updatedBooking : b
-    ));
-    setIsEditModalOpen(false);
-    setSelectedBooking(null);
+  const saveBooking = async (updatedBooking: Booking) => {
+    try {
+      // Get the authentication token
+      const token = localStorage.getItem('admin-token') || 'demo-api-key';
+      
+      // Call the API to update the booking
+      const response = await fetch(`/api/bookings/${updatedBooking.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedBooking),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `Error updating booking: ${response.status}`);
+      }
+      
+      // Update local state after successful API call
+      setBookings(bookings.map(b => 
+        b.id === updatedBooking.id ? updatedBooking : b
+      ));
+      setIsEditModalOpen(false);
+      setSelectedBooking(null);
+    } catch (error: any) {
+      console.error("Error updating booking:", error);
+      alert(`Failed to update booking: ${error.message}`);
+    }
   };
 
   return (
     <div className="space-y-4">
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-red-800">Error loading bookings</h3>
+              <div className="mt-2 text-sm text-red-700">
+                <p>{error}</p>
+              </div>
+              <div className="mt-4">
+                <button
+                  type="button"
+                  onClick={() => window.location.reload()}
+                  className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                >
+                  Try again
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <div className="flex flex-col sm:flex-row gap-4 justify-between">
         <div className="relative w-full sm:w-64">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />

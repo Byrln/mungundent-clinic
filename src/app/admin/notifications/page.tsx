@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Calendar, 
   Clock, 
   Check, 
   Trash2, 
-  Filter 
+  Filter,
+  RefreshCw,
+  ShoppingCart
 } from "lucide-react";
 import { format } from "date-fns";
 import { Card } from "@/components/ui/card";
@@ -28,11 +30,20 @@ export default function NotificationsPage() {
     notifications, 
     markAsRead, 
     markAllAsRead, 
-    removeNotification 
+    removeNotification,
+    loading,
+    refreshNotifications
   } = useNotifications();
   
   const [filter, setFilter] = useState<string>("ALL");
-  const [isLoading, setIsLoading] = useState(false);
+  
+  // Refresh notifications on page load - only once
+  useEffect(() => {
+    console.log('Notifications page mounted, refreshing notifications...');
+    refreshNotifications();
+    
+    // No dependencies array to ensure this only runs once when the component mounts
+  }, []);
   
   // Filter notifications based on selected filter
   const filteredNotifications = notifications.filter(notification => {
@@ -51,6 +62,9 @@ export default function NotificationsPage() {
       if (notification.type === "BOOKING" && notification.data?.bookingId) {
         // Navigate to booking details
         window.location.href = `/admin/bookings?highlight=${notification.data.bookingId}`;
+      } else if (notification.type === "ORDER" && notification.data?.orderId) {
+        // Navigate to order details
+        window.location.href = `/admin/orders?highlight=${notification.data.orderId}`;
       }
     } catch (error) {
       console.error("Failed to handle notification action:", error);
@@ -67,6 +81,8 @@ export default function NotificationsPage() {
     switch (type) {
       case "BOOKING":
         return <Calendar className="w-5 h-5 text-green-500" />;
+      case "ORDER":
+        return <ShoppingCart className="w-5 h-5 text-blue-500" />;
       case "SYSTEM":
         return <Clock className="w-5 h-5 text-yellow-500" />;
       default:
@@ -109,17 +125,27 @@ export default function NotificationsPage() {
                 <SelectItem value="ALL">Бүх мэдэгдлүүд</SelectItem>
                 <SelectItem value="UNREAD">Уншаагүй</SelectItem>
                 <SelectItem value="BOOKING">Цаг захиалга</SelectItem>
+                <SelectItem value="ORDER">Захиалга</SelectItem>
                 <SelectItem value="SYSTEM">Систем</SelectItem>
               </SelectContent>
             </Select>
           </div>
+          
+          <Button
+            variant="outline"
+            onClick={() => refreshNotifications()}
+            disabled={loading}
+          >
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Шинэчлэх
+          </Button>
           
           <AddTestNotification />
           
           <Button 
             variant="outline" 
             onClick={markAllAsRead}
-            disabled={!notifications.some(n => !n.isRead)}
+            disabled={loading || !notifications.some(n => !n.isRead)}
           >
             <Check className="w-4 h-4 mr-2" />
             Бүгдийг уншсан болгох
@@ -128,7 +154,7 @@ export default function NotificationsPage() {
       </div>
       
       <Card className="overflow-hidden">
-        {isLoading ? (
+        {loading ? (
           <div className="p-8 text-center text-gray-500">
             Мэдэгдлүүдийг ачааллаж байна...
           </div>

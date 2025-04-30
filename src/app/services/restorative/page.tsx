@@ -448,7 +448,8 @@ export default function RestorativeServicePage() {
             </Button>
             <Button asChild variant="outline" size="lg" className="bg-transparent border-white text-white hover:bg-white/10">
               <Link href="/contact">Холбоо барих</Link>
-            </Button>
+            </Button>git pull
+            git push -u origin master
           </div>
         </div>
       </section>

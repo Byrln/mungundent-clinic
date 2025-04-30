@@ -9,8 +9,10 @@ export async function GET(
   try {
     const id = params.id;
     
-    const booking = await prisma.booking.findUnique({
-      where: { id },
+    const booking = await executeDbOperation(async () => {
+      return prisma.booking.findUnique({
+        where: { id },
+      });
     });
     
     if (!booking) {
@@ -21,10 +23,10 @@ export async function GET(
     }
     
     return NextResponse.json(booking);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching booking:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch booking' },
+      { error: error.message || 'Failed to fetch booking' },
       { status: 500 }
     );
   }
@@ -48,8 +50,10 @@ export async function PUT(
     }
     
     // Check if booking exists
-    const existingBooking = await prisma.booking.findUnique({
-      where: { id },
+    const existingBooking = await executeDbOperation(async () => {
+      return prisma.booking.findUnique({
+        where: { id },
+      });
     });
     
     if (!existingBooking) {
@@ -62,24 +66,26 @@ export async function PUT(
     // Parse date string to Date object
     const bookingDate = new Date(date);
     
-    // Update booking
-    const updatedBooking = await prisma.booking.update({
-      where: { id },
-      data: {
-        name,
-        phone,
-        serviceType,
-        date: bookingDate,
-        time,
-        message,
-      },
+    // Update booking with enhanced error handling and connection management
+    const updatedBooking = await executeDbOperation(async () => {
+      return prisma.booking.update({
+        where: { id },
+        data: {
+          name,
+          phone,
+          serviceType,
+          date: bookingDate,
+          time,
+          message,
+        },
+      });
     });
     
     return NextResponse.json(updatedBooking);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating booking:', error);
     return NextResponse.json(
-      { error: 'Failed to update booking' },
+      { error: error.message || 'Failed to update booking' },
       { status: 500 }
     );
   }
@@ -93,9 +99,11 @@ export async function DELETE(
   try {
     const id = params.id;
     
-    // Check if booking exists
-    const existingBooking = await prisma.booking.findUnique({
-      where: { id },
+    // Check if booking exists with enhanced error handling
+    const existingBooking = await executeDbOperation(async () => {
+      return prisma.booking.findUnique({
+        where: { id },
+      });
     });
     
     if (!existingBooking) {
@@ -105,19 +113,21 @@ export async function DELETE(
       );
     }
     
-    // Delete booking
-    await prisma.booking.delete({
-      where: { id },
+    // Delete booking with enhanced error handling and connection management
+    await executeDbOperation(async () => {
+      return prisma.booking.delete({
+        where: { id },
+      });
     });
     
     return NextResponse.json(
       { message: 'Booking deleted successfully' },
       { status: 200 }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error deleting booking:', error);
     return NextResponse.json(
-      { error: 'Failed to delete booking' },
+      { error: error.message || 'Failed to delete booking' },
       { status: 500 }
     );
   }

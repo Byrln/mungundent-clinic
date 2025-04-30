@@ -8,6 +8,7 @@ import {
   Calendar,
   Settings,
   Bell,
+  ShoppingCart,
 } from "lucide-react";
 import { useNotifications } from "@/context/NotificationsContext";
 import { NotificationBadge } from "@/components/ui/notification-badge";
@@ -22,6 +23,11 @@ const sidebarLinks = [
     name: "Цаг авалтууд",
     href: "/admin/bookings",
     icon: Calendar,
+  },
+  {
+    name: "Захиалгууд",
+    href: "/admin/orders",
+    icon: ShoppingCart,
   },
   {
     name: "Мэдэгдлүүд",

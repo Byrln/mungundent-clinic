@@ -68,3 +68,55 @@ model Booking {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Product {
+  id          String      @id @default(cuid())
+  title       String
+  description String?
+  price       Float
+  imageUrl    String?
+  inStock     Boolean     @default(true)
+  category    String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
+}
+
+model Order {
+  id           String      @id @default(cuid())
+  customerName String
+  email        String
+  phone        String
+  address      String
+  city         String
+  postalCode   String?
+  totalAmount  Float
+  paymentMethod String
+  status       String      @default("pending")
+  items        OrderItem[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  quantity  Int
+  price     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String   // "BOOKING", "ORDER", "SYSTEM", etc.
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  data      Json?    // Additional data like bookingId, orderId, etc.
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
