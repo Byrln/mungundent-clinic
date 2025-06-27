@@ -7,16 +7,16 @@ import { Calendar, DollarSign, ShoppingBag, Package } from "lucide-react";
 interface StatsData {
   totalBookings: number;
   totalOrders: number;
-  totalRevenue: number;
-  totalProducts: number;
+  // totalRevenue: number;
+  // totalProducts: number;
 }
 
 export default function DashboardStats() {
   const [stats, setStats] = useState<StatsData>({
     totalBookings: 0,
     totalOrders: 0,
-    totalRevenue: 0,
-    totalProducts: 0,
+    // totalRevenue: 0,
+    // totalProducts: 0,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,31 +25,60 @@ export default function DashboardStats() {
     const fetchStats = async () => {
       try {
         setLoading(true);
+        setError(null);
         
-        // Fetch bookings count
-        const bookingsResponse = await fetch('/api/bookings');
-        if (!bookingsResponse.ok) throw new Error('Failed to fetch bookings');
-        const bookingsData = await bookingsResponse.json();
+        let bookingsData = [];
+        let ordersData = [];
+        let productsData = [];
         
-        // Fetch orders
-        const ordersResponse = await fetch('/api/orders');
-        if (!ordersResponse.ok) throw new Error('Failed to fetch orders');
-        const ordersData = await ordersResponse.json();
+        try {
+          // Fetch bookings count
+          const bookingsResponse = await fetch('/api/bookings');
+          if (!bookingsResponse.ok) {
+            console.error('Bookings API error:', await bookingsResponse.text());
+            throw new Error('Failed to fetch bookings');
+          }
+          bookingsData = await bookingsResponse.json();
+        } catch (bookingsError) {
+          console.error("Error fetching bookings:", bookingsError);
+          // Continue with other requests
+        }
         
-        // Fetch products
-        const productsResponse = await fetch('/api/products');
-        if (!productsResponse.ok) throw new Error('Failed to fetch products');
-        const productsData = await productsResponse.json();
+        try {
+          // Fetch orders
+          const ordersResponse = await fetch('/api/orders');
+          if (!ordersResponse.ok) {
+            console.error('Orders API error:', await ordersResponse.text());
+            throw new Error('Failed to fetch orders');
+          }
+          ordersData = await ordersResponse.json();
+        } catch (ordersError) {
+          console.error("Error fetching orders:", ordersError);
+          // Continue with other requests
+        }
+        
+        try {
+          // Fetch products
+          const productsResponse = await fetch('/api/products');
+          if (!productsResponse.ok) {
+            console.error('Products API error:', await productsResponse.text());
+            throw new Error('Failed to fetch products');
+          }
+          productsData = await productsResponse.json();
+        } catch (productsError) {
+          console.error("Error fetching products:", productsError);
+          // Continue with other requests
+        }
         
         // Calculate total revenue from orders
         const totalRevenue = ordersData.reduce((sum: number, order: any) => 
           sum + order.totalAmount, 0);
         
         setStats({
-          totalBookings: bookingsData.length,
-          totalOrders: ordersData.length,
-          totalRevenue: totalRevenue,
-          totalProducts: productsData.length,
+          totalBookings: bookingsData.length || 0,
+          totalOrders: ordersData.length || 0,
+          // totalRevenue: totalRevenue,
+          // totalProducts: productsData.length || 0,
         });
         
         setLoading(false);
@@ -76,18 +105,18 @@ export default function DashboardStats() {
       icon: ShoppingBag,
       color: "bg-green-500",
     },
-    {
-      title: "Нийт орлого",
-      value: `₮${stats.totalRevenue.toLocaleString()}`,
-      icon: DollarSign,
-      color: "bg-purple-500",
-    },
-    {
-      title: "Нийт бүтээгдэхүүн",
-      value: stats.totalProducts,
-      icon: Package,
-      color: "bg-orange-500",
-    },
+    // {
+    //   title: "Нийт орлого",
+    //   value: `₮${stats.totalRevenue.toLocaleString()}`,
+    //   icon: DollarSign,
+    //   color: "bg-purple-500",
+    // },
+    // {
+    //   title: "Нийт бүтээгдэхүүн",
+    //   value: stats.totalProducts,
+    //   icon: Package,
+    //   color: "bg-orange-500",
+    // },
   ];
 
   if (error) {

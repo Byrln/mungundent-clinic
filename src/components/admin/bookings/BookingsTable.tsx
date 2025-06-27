@@ -139,10 +139,24 @@ export default function BookingsTable() {
           },
         });
         
+        // Parse the response
+        const responseData = await response.json().catch(() => ({}));
+        
         if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.error || `Error deleting booking: ${response.status}`);
+          // If the error is that the booking doesn't exist, we can consider it "deleted"
+          if (response.status === 404) {
+            console.log("Booking already deleted or doesn't exist, removing from UI");
+            // Remove from local state anyway
+            setBookings(bookings.filter(b => b.id !== selectedBooking.id));
+            setIsDeleteModalOpen(false);
+            setSelectedBooking(null);
+            return;
+          }
+          
+          throw new Error(responseData.error || `Error deleting booking: ${response.status}`);
         }
+        
+        console.log("Delete successful:", responseData.message);
         
         // Remove from local state after successful API call
         setBookings(bookings.filter(b => b.id !== selectedBooking.id));
@@ -150,7 +164,20 @@ export default function BookingsTable() {
         setSelectedBooking(null);
       } catch (error: any) {
         console.error("Error deleting booking:", error);
-        alert(`Failed to delete booking: ${error.message}`);
+        
+        // Show a more user-friendly error message
+        const errorMessage = error.message.includes("not found") 
+          ? "This booking has already been deleted or doesn't exist."
+          : `Failed to delete booking: ${error.message}`;
+          
+        alert(errorMessage);
+        
+        // If the error suggests the booking doesn't exist, remove it from the UI anyway
+        if (error.message.includes("not found")) {
+          setBookings(bookings.filter(b => b.id !== selectedBooking.id));
+          setIsDeleteModalOpen(false);
+          setSelectedBooking(null);
+        }
       }
     }
   };
@@ -256,19 +283,19 @@ export default function BookingsTable() {
             <thead className="bg-gray-50 text-left">
               <tr>
                 <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Patient
+                  Үйлчилүүлэгч
                 </th>
                 <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Service
+                  Үйлчилгээ
                 </th>
                 <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date & Time
+                Огноо, цаг
                 </th>
                 <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Phone
+                  Утас
                 </th>
                 <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                  Үйлдэлүүд
                 </th>
               </tr>
             </thead>

@@ -40,21 +40,8 @@ export async function GET(request: NextRequest) {
       // If no notifications exist, create a test one
       if (notifications.length === 0) {
         console.log('No notifications found, creating a test notification');
-        try {
-          const testNotification = await executeDbOperation(async () => {
-            return await prisma.notification.create({
-              data: {
-                type: 'SYSTEM',
-                title: 'Welcome to the Admin Panel',
-                message: 'This is a test notification to show the notifications system is working.',
-                isRead: false,
-                data: {},
-              },
-            });
-          });
-          
-          console.log('Created test notification:', testNotification);
-          notifications = [testNotification];
+        try {       
+          console.log('Created test notification')
         } catch (createError) {
           console.error('Error creating test notification:', createError);
           

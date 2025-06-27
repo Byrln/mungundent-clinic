@@ -62,7 +62,7 @@ export async function fetchNotifications(unreadOnly = false, limit = 50): Promis
       return [];
     } catch (fetchError) {
       clearTimeout(timeoutId);
-      if (fetchError.name === 'AbortError') {
+      if (fetchError instanceof Error && fetchError.name === 'AbortError') {
         console.error('Fetch request timed out');
       } else {
         console.error('Fetch error:', fetchError);

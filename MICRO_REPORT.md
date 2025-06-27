@@ -1,92 +1,92 @@
-# Мөнгөндент - Шүдний эмнэлгийн вэбсайтын Микро Тайлан
+# Мөнгөндент - Dental Clinic Website Micro Report
 
-## Төслийн тойм
-Next.js дээр суурилсан орчин үеийн шүдний эмнэлгийн вэбсайт бөгөөд хүүхдийн шүдний эмчилгээ, циркон шүдний титэм болон ерөнхий шүдний эмчилгээний цогц үйлчилгээг санал болгодог. Энэхүү сайт нь үйлчлүүлэгчийн хэсэг болон админ удирдлагын самбарыг агуулсан.
+## Project Overview
+A modern dental clinic website built with Next.js, offering comprehensive dental services including children's dentistry, zircon crowns, and general dental care. The site features both client-facing pages and an admin dashboard.
 
-## Технологийн багц
+## Tech Stack
 - **Frontend Framework**: Next.js 15.3.1 (App Router)
-- **Програмчлалын хэл**: TypeScript
-- **Загварчлал**: TailwindCSS + Shadcn UI
-- **Анимэйшн**: Framer Motion
-- **Өгөгдлийн сан**: PostgreSQL (Neon)
+- **Language**: TypeScript
+- **Styling**: TailwindCSS + Shadcn UI
+- **Animations**: Framer Motion
+- **Database**: PostgreSQL (Neon)
 - **ORM**: Prisma
-- **Туслах сангууд**: Lodash
+- **Utilities**: Lodash
 
-## Main Features
+## Key Features
 
-### Үйлчлүүлэгчийн хэсгийн features
-1. **Үйлчилгээний хуудсууд**
-   - Нүүр хуудас, үйлчилгээний ерөнхий мэдээлэлтэй
-   - Дэлгэрэнгүй үйлчилгээний тайлбар (Хүүхдийн шүдний эмчилгээ, Циркон)
-   - Эмчийн мэдээлэл, мэргэшил
-   - Эмнэлгийн зургийн цомог
+### Client-Facing Features
+1. **Service Pages**
+   - Home page with hero section and service overview
+   - Detailed service descriptions (Children's dentistry, Zircon crowns)
+   - Doctor profile and qualifications
+   - Image gallery of facilities
 
-2. **Цаг захиалгын систем**
-   - Онлайн цаг захиалга
-   - Үйлчилгээ сонголт
-   - Холбоо барих мэдээлэл цуглуулах
+2. **Booking System**
+   - Online appointment scheduling
+   - Service selection
+   - Contact information collection
 
-3. **Онлайн дэлгүүр**
-   - Шүдний эрүүл мэндийн бүтээгдэхүүнүүд
-   - Онлайн худалдан авалтын систем
+3. **eShop**
+   - Dental health products
+   - Online purchasing system
 
-### Админ удирдлагын самбар
-/admin ~ route
-1. **Захиалгын удирдлага**
-   - Цаг захиалгыг харах, удирдах
-   - Сүүлийн үеийн захиалгын тойм
-   - Захиалгын статистик
+### Admin Dashboard
+1. **Booking Management**
+   - View and manage appointments
+   - Recent bookings overview
+   - Booking statistics
 
-2. **Тохиргооны удирдлага**
-   - Сайтын тохиргоо
-   - Контент удирдлага
+2. **Settings Management**
+   - Site configuration
+   - Content management
 
-## Төслийн бүтэц
+## Project Structure
 ```
 src/
-  ├── app/              # Next.js app router хуудсууд
-  ├── components/       # Дахин ашиглах UI компонентууд
+  ├── app/              # Next.js app router pages
+  ├── components/       # Reusable UI components
   ├── context/         # React context providers
-  ├── hooks/           # Өөрийн тодорхойлсон React hooks
-  ├── lib/             # Туслах функцууд болон тохиргоо
-  └── types/           # TypeScript төрлийн тодорхойлолтууд
+  ├── hooks/           # Custom React hooks
+  ├── lib/             # Utility functions and configs
+  └── types/           # TypeScript type definitions
 ```
 
-## UI/UX онцлогууд
-- Responsive дизайн
-- Smooth скролл анимэйшн
-- Intersection observer ашигласан скролл анимэйшн
-- Монгол хэлний дэмжлэг
-- Орчин үеийн цэвэрхэн minimalist интерфэйс
+## UI/UX Features
+- Responsive design
+- Smooth scroll animations
+- Intersection observer for scroll-based animations
+- Mongolian language support
+- Modern and clean interface
 
-## Өгөгдлийн сангийн бүтэц
-Prisma ORM ашиглан дараах хүснэгтүүдийг удирддаг:
-- Хэрэглэгчид
-- Захиалгууд
-- Үйлчилгээнүүд
-- Бүтээгдэхүүнүүд
-- Тохиргоонууд
+## Database Schema
+Managed through Prisma ORM with tables for:
+- Users
+- Bookings
+- Services
+- Products
+- Settings
 
-## Гүйцэтгэлийн оновчлол
-- Next.js Image компонент ашиглан зургийн оновчлол
-- Компонент түвшний код хуваалт
-- Зохистой server-side rendering
-- Framer Motion ашиглан хийгдэх анимэйшн
+## Performance Optimizations
+- Image optimization with Next.js Image component
+- Component-level code splitting
+- Server-side rendering where appropriate
+- Optimized animations with Framer Motion
 
-## Аюулгүй байдлын онцлогууд
-- Хамгаалагдсан админ замууд
-- API замын хамгаалалт
-- Орчны хувьсагчдын удирдлага (.env файл)
-- Өгөгдлийн сангийн холболтын аюулгүй байдал
+## Security Features
+- Protected admin routes
+- API route protection
+- Environment variable management
+- Database connection security
 
-## Хөгжүүлэлтийн дадлууд
-- TypeScript ашиглан төрлийн аюулгүй байдал
-- Компонент суурьтай архитектур
-- Дахин ашиглах логик бүхий өөрийн hooks
-- ESLint/Prettier ашиглан тогтмол код загварчлал
+## Development Practices
+- TypeScript for type safety
+- Component-based architecture
+- Custom hooks for reusable logic
+- Consistent code styling with ESLint/Prettier
 
-## Ирээдүйн сайжруулалтууд
-- Имэйл мэдэгдэл бүхий сайжруулсан захиалгын систем
-- Төлбөрийн системүүдтэй холбох
-- Гүйцэтгэлийн хяналт ба аналитик
-- SEO оновчлол
+## Future Improvements
+- Enhanced booking system with email notifications
+- Integration with payment gateways
+- Multi-language support
+- Performance monitoring and analytics
+- SEO optimizations

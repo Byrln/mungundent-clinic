@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronRight, CheckCircle, Clock, Shield, Smile, Sparkles, Zap, Calendar, Stethoscope, ClipboardList, Activity, HeartPulse } from "lucide-react";
 import CTASection from "@/components/sections/CTASection";
+import ProcessSection from "@/components/sections/ProcessSection";
+import FeaturedServices from "@/components/sections/FeaturedServices";
 
 // Animation variants
 const fadeIn = {
@@ -340,75 +339,12 @@ export default function ServicesPage() {
       </motion.section>
 
       {/* Featured Services Section */}
-      <section ref={featuredRef} className="py-16 md:py-32 bg-white">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-16">
-            <div className="max-w-2xl mb-6 md:mb-0">
-              <div className="inline-block px-4 py-1 mb-3 md:mb-4 rounded-full bg-dental-100 text-dental-600 font-medium text-sm">
-                Онцлох үйлчилгээнүүд
-              </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4 text-dental-800">Бидний мэргэжлийн үйлчилгээнүүд</h2>
-              <p className="text-gray-600">
-                Бидний хамгийн түгээмэл үйлчилгээнүүдтэй танилцана уу.
-              </p>
-            </div>
-            <Button asChild variant="outline" className="border-dental-300 text-dental-700 hover:bg-dental-100 hover:border-dental-400 transition-all w-full sm:w-auto">
-              <Link href="/services" className="flex items-center justify-center">
-                Бүх үйлчилгээг харах
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-
-          <motion.div
-            initial="hidden"
-            animate={isInView.featured ? "visible" : "hidden"}
-            variants={staggerContainer}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
-          >
-            {featuredServices.map((service, index) => (
-              <motion.div key={index} variants={fadeIn}>
-                <div className="group h-full rounded-xl overflow-hidden bg-white border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  <div className="relative h-44 sm:h-52 w-full overflow-hidden">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-                  <div className="p-4 sm:p-6">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-dental-100 flex items-center justify-center text-dental-600 group-hover:bg-dental-500 group-hover:text-white transition-colors">
-                        {service.icon}
-                      </div>
-                      <h3 className="text-lg sm:text-xl font-bold text-dental-800 group-hover:text-dental-600 transition-colors">{service.title}</h3>
-                    </div>
-                    <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
-                      {service.description}
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <Link 
-                        href={service.link} 
-                        className="text-dental-600 font-medium flex items-center hover:text-dental-700 transition-colors text-sm sm:text-base"
-                      >
-                        Дэлгэрэнгүй <ChevronRight className="ml-1 h-4 w-4" />
-                      </Link>
-                      <Link 
-                        href="/booking"
-                        className="w-8 h-8 rounded-full bg-dental-50 flex items-center justify-center text-dental-600 hover:bg-dental-100 transition-colors"
-                      >
-                        <Calendar className="h-4 w-4" />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      <div ref={featuredRef}>
+        <FeaturedServices
+          services={featuredServices}
+          isInView={isInView.featured}
+        />
+      </div>
 
       {/* Service Categories Section */}
       <section className="py-16 md:py-24 bg-dental-50 relative overflow-hidden">
@@ -642,261 +578,37 @@ export default function ServicesPage() {
       </section>
 
       {/* Process Section */}
-      <section className="py-20 md:py-32 bg-gradient-to-b from-white to-dental-50/30 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-dental-100/30 rounded-full transform translate-x-1/2 -translate-y-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-dental-100/20 rounded-full transform -translate-x-1/2 translate-y-1/2"></div>
-        
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <div className="text-center mb-16">
-            <div className="inline-block px-4 py-1 mb-4 rounded-full bg-dental-100 text-dental-600 font-medium text-sm">
-              Таны аюулгүй байдал бидний тэргүүн зорилго
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-dental-800">Эмчилгээний үйл явц</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Мөнгөндент эмнэлэгт үйлчлүүлэх үйл явц энгийн бөгөөд тав тухтай байхаар зохион байгуулагдсан.
-            </p>
-          </div>
-
-          {/* Desktop Process Steps - Hidden on Mobile */}
-          <div className="hidden md:grid md:grid-cols-5 gap-6 max-w-5xl mx-auto">
-            {/* Step 1 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 h-full border border-dental-100 hover:border-dental-200 group hover:-translate-y-1">
-                <div className="w-16 h-16 rounded-full bg-dental-500 flex items-center justify-center text-white mb-4 mx-auto group-hover:bg-dental-600 transition-colors">
-                  <Calendar className="h-8 w-8" />
-                </div>
-                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-dental-600 text-white flex items-center justify-center font-bold text-sm">1</div>
-                <h3 className="text-xl font-bold mb-3 text-dental-800 text-center">Цаг захиалах</h3>
-                <p className="text-gray-600 text-center">
-                  Утсаар эсвэл онлайнаар цаг захиалах. Бид таны хэрэгцээнд тохирсон цагийг санал болгоно.
-                </p>
-                <div className="mt-4 flex justify-center">
-                  <Link 
-                    href="/booking" 
-                    className="text-dental-600 font-medium hover:text-dental-700 transition-colors flex items-center text-sm"
-                  >
-                    Цаг захиалах <ChevronRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </div>
-              </div>
-              <div className="absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-dental-500 to-dental-300 transform -translate-y-1/2 z-0"></div>
-            </motion.div>
-
-            {/* Step 2 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 h-full border border-dental-100 hover:border-dental-200 group hover:-translate-y-1">
-                <div className="w-16 h-16 rounded-full bg-dental-500 flex items-center justify-center text-white mb-4 mx-auto group-hover:bg-dental-600 transition-colors">
-                  <Stethoscope className="h-8 w-8" />
-                </div>
-                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-dental-600 text-white flex items-center justify-center font-bold text-sm">2</div>
-                <h3 className="text-xl font-bold mb-3 text-dental-800 text-center">Анхны үзлэг</h3>
-                <p className="text-gray-600 text-center">
-                  Эмч таны шүдний эрүүл мэндийг үнэлж, шаардлагатай эмчилгээг тодорхойлно.
-                </p>
-              </div>
-              <div className="absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-dental-500 to-dental-300 transform -translate-y-1/2 z-0"></div>
-            </motion.div>
-
-            {/* Step 3 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 h-full border border-dental-100 hover:border-dental-200 group hover:-translate-y-1">
-                <div className="w-16 h-16 rounded-full bg-dental-500 flex items-center justify-center text-white mb-4 mx-auto group-hover:bg-dental-600 transition-colors">
-                  <ClipboardList className="h-8 w-8" />
-                </div>
-                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-dental-600 text-white flex items-center justify-center font-bold text-sm">3</div>
-                <h3 className="text-xl font-bold mb-3 text-dental-800 text-center">Эмчилгээний төлөвлөгөө</h3>
-                <p className="text-gray-600 text-center">
-                  Эмч таны хэрэгцээнд тохирсон эмчилгээний төлөвлөгөө, үнийн санал гаргана.
-                </p>
-              </div>
-              <div className="absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-dental-500 to-dental-300 transform -translate-y-1/2 z-0"></div>
-            </motion.div>
-
-            {/* Step 4 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 h-full border border-dental-100 hover:border-dental-200 group hover:-translate-y-1">
-                <div className="w-16 h-16 rounded-full bg-dental-500 flex items-center justify-center text-white mb-4 mx-auto group-hover:bg-dental-600 transition-colors">
-                  <Activity className="h-8 w-8" />
-                </div>
-                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-dental-600 text-white flex items-center justify-center font-bold text-sm">4</div>
-                <h3 className="text-xl font-bold mb-3 text-dental-800 text-center">Эмчилгээ</h3>
-                <p className="text-gray-600 text-center">
-                  Эмчилгээг мэргэжлийн өндөр түвшинд, тав тухтай орчинд хийж гүйцэтгэнэ.
-                </p>
-              </div>
-              <div className="absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-dental-500 to-dental-300 transform -translate-y-1/2 z-0"></div>
-            </motion.div>
-
-            {/* Step 5 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 h-full border border-dental-100 hover:border-dental-200 group hover:-translate-y-1">
-                <div className="w-16 h-16 rounded-full bg-dental-500 flex items-center justify-center text-white mb-4 mx-auto group-hover:bg-dental-600 transition-colors">
-                  <HeartPulse className="h-8 w-8" />
-                </div>
-                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-dental-600 text-white flex items-center justify-center font-bold text-sm">5</div>
-                <h3 className="text-xl font-bold mb-3 text-dental-800 text-center">Хяналт</h3>
-                <p className="text-gray-600 text-center">
-                  Эмчилгээний дараах хяналт, зөвлөгөөг үзүүлж, таны шүдний эрүүл мэндийг хадгалахад туслана.
-                </p>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Mobile Process Steps - Visible only on Mobile */}
-          <div className="md:hidden space-y-6">
-            {/* Step 1 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="bg-white rounded-xl shadow-lg p-5 border border-dental-100 relative">
-                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-dental-600 text-white flex items-center justify-center font-bold text-sm shadow-md">1</div>
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-14 h-14 rounded-full bg-dental-500 flex-shrink-0 flex items-center justify-center text-white">
-                    <Calendar className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-lg font-bold text-dental-800">Цаг захиалах</h3>
-                </div>
-                <p className="text-gray-600 text-sm ml-[4.5rem]">
-                  Утсаар эсвэл онлайнаар цаг захиалах. Бид таны хэрэгцээнд тохирсон цагийг санал болгоно.
-                </p>
-                <div className="mt-3 ml-[4.5rem]">
-                  <Link 
-                    href="/booking" 
-                    className="text-dental-600 font-medium hover:text-dental-700 transition-colors flex items-center text-sm"
-                  >
-                    Цаг захиалах <ChevronRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Step 2 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <div className="bg-white rounded-xl shadow-lg p-5 border border-dental-100 relative">
-                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-dental-600 text-white flex items-center justify-center font-bold text-sm shadow-md">2</div>
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-14 h-14 rounded-full bg-dental-500 flex-shrink-0 flex items-center justify-center text-white">
-                    <Stethoscope className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-lg font-bold text-dental-800">Анхны үзлэг</h3>
-                </div>
-                <p className="text-gray-600 text-sm ml-[4.5rem]">
-                  Эмч таны шүдний эрүүл мэндийг үнэлж, шаардлагатай эмчилгээг тодорхойлно.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Step 3 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <div className="bg-white rounded-xl shadow-lg p-5 border border-dental-100 relative">
-                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-dental-600 text-white flex items-center justify-center font-bold text-sm shadow-md">3</div>
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-14 h-14 rounded-full bg-dental-500 flex-shrink-0 flex items-center justify-center text-white">
-                    <ClipboardList className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-lg font-bold text-dental-800">Эмчилгээний төлөвлөгөө</h3>
-                </div>
-                <p className="text-gray-600 text-sm ml-[4.5rem]">
-                  Эмч таны хэрэгцээнд тохирсон эмчилгээний төлөвлөгөө, үнийн санал гаргана.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Step 4 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              viewport={{ once: true }}
-            >
-              <div className="bg-white rounded-xl shadow-lg p-5 border border-dental-100 relative">
-                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-dental-600 text-white flex items-center justify-center font-bold text-sm shadow-md">4</div>
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-14 h-14 rounded-full bg-dental-500 flex-shrink-0 flex items-center justify-center text-white">
-                    <Activity className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-lg font-bold text-dental-800">Эмчилгээ</h3>
-                </div>
-                <p className="text-gray-600 text-sm ml-[4.5rem]">
-                  Эмчилгээг мэргэжлийн өндөр түвшинд, тав тухтай орчинд хийж гүйцэтгэнэ.
-                </p>
-              </div>
-            </motion.div>
-
-            {/* Step 5 */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <div className="bg-white rounded-xl shadow-lg p-5 border border-dental-100 relative">
-                <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-dental-600 text-white flex items-center justify-center font-bold text-sm shadow-md">5</div>
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-14 h-14 rounded-full bg-dental-500 flex-shrink-0 flex items-center justify-center text-white">
-                    <HeartPulse className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-lg font-bold text-dental-800">Хяналт</h3>
-                </div>
-                <p className="text-gray-600 text-sm ml-[4.5rem]">
-                  Эмчилгээний дараах хяналт, зөвлөгөөг үзүүлж, таны шүдний эрүүл мэндийг хадгалахад туслана.
-                </p>
-              </div>
-            </motion.div>
-          </div>
-
-          <div className="mt-16 text-center">
-            <Button asChild className="bg-dental-600 hover:bg-dental-700 shadow-lg shadow-dental-500/20">
-              <Link href="/booking" className="flex items-center">
-                Цаг захиалах <ChevronRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      <ProcessSection
+        title="Эмчилгээний үйл явц"
+        description="Мөнгөндент эмнэлэгт үйлчлүүлэх үйл явц энгийн бөгөөд тав тухтай байхаар зохион байгуулагдсан."
+        steps={[
+          {
+            title: "Цаг захиалах",
+            description: "Утсаар эсвэл онлайнаар цаг захиалах. Бид таны хэрэгцээнд тохирсон цагийг санал болгоно.",
+            icon: Calendar
+          },
+          {
+            title: "Анхны үзлэг",
+            description: "Эмч таны шүдний эрүүл мэндийг үнэлж, шаардлагатай эмчилгээг тодорхойлно.",
+            icon: Stethoscope
+          },
+          {
+            title: "Эмчилгээний төлөвлөгөө",
+            description: "Эмч таны хэрэгцээнд тохирсон эмчилгээний төлөвлөгөө, үнийн санал гаргана.",
+            icon: ClipboardList
+          },
+          {
+            title: "Эмчилгээ",
+            description: "Эмчилгээг мэргэжлийн өндөр түвшинд, тав тухтай орчинд хийж гүйцэтгэнэ.",
+            icon: Activity
+          },
+          {
+            title: "Хяналт",
+            description: "Эмчилгээний дараах хяналт, зөвлөгөөг үзүүлж, таны шүдний эрүүл мэндийг хадгалахад туслана.",
+            icon: HeartPulse
+          }
+        ]}
+      />
 
       {/* CTA Section */}
       <CTASection {...ctaData}/>

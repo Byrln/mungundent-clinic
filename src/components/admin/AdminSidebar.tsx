@@ -6,9 +6,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
   Calendar,
-  Settings,
   Bell,
-  ShoppingCart,
 } from "lucide-react";
 import { useNotifications } from "@/context/NotificationsContext";
 import { NotificationBadge } from "@/components/ui/notification-badge";
@@ -20,24 +18,14 @@ const sidebarLinks = [
     icon: LayoutDashboard,
   },
   {
-    name: "Цаг авалтууд",
+    name: "Цаг захиалгууд",
     href: "/admin/bookings",
     icon: Calendar,
-  },
-  {
-    name: "Захиалгууд",
-    href: "/admin/orders",
-    icon: ShoppingCart,
   },
   {
     name: "Мэдэгдлүүд",
     href: "/admin/notifications",
     icon: Bell,
-  },
-  {
-    name: "Тохиргоо",
-    href: "/admin/settings",
-    icon: Settings,
   },
 ];
 
@@ -53,7 +41,7 @@ export default function AdminSidebar() {
       <nav className="mt-6">
         <ul className="space-y-1">
           {sidebarLinks.map((link) => {
-            const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
+            const isActive = pathname === link.href;
             
             return (
               <li key={link.href}>

@@ -1,0 +1,338 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma, executeDbOperation } from '@/lib/db';
+import { startOfDay, endOfDay, subDays, startOfWeek, endOfWeek, format, parseISO } from 'date-fns';
+import { enUS } from 'date-fns/locale';
+
+// GET /api/analytics/bookings - Get booking analytics
+export async function GET(request: NextRequest) {
+  try {
+    console.log('Fetching booking analytics...');
+    
+    // Get current date
+    const today = new Date();
+    console.log('Current date:', today);
+    
+    const startOfToday = startOfDay(today);
+    const endOfToday = endOfDay(today);
+    
+    // Get start and end of current week (using Monday as first day of week)
+    const startOfCurrentWeek = startOfWeek(today, { weekStartsOn: 1 }); // 1 = Monday
+    const endOfCurrentWeek = endOfWeek(today, { weekStartsOn: 1 });
+    
+    // Get start and end of previous week
+    const startOfPreviousWeek = startOfWeek(subDays(today, 7), { weekStartsOn: 1 });
+    const endOfPreviousWeek = endOfWeek(subDays(today, 7), { weekStartsOn: 1 });
+    
+    // Get start of current month
+    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    
+    console.log('Date ranges:', {
+      today: today.toISOString(),
+      startOfToday: startOfToday.toISOString(),
+      endOfToday: endOfToday.toISOString(),
+      startOfCurrentWeek: startOfCurrentWeek.toISOString(),
+      endOfCurrentWeek: endOfCurrentWeek.toISOString(),
+      startOfPreviousWeek: startOfPreviousWeek.toISOString(),
+      endOfPreviousWeek: endOfPreviousWeek.toISOString(),
+      startOfMonth: startOfMonth.toISOString()
+    });
+    
+    // 1. Get today's bookings count
+    const todayBookingsCount = await executeDbOperation(async () => {
+      return prisma.booking.count({
+        where: {
+          date: {
+            gte: startOfToday,
+            lte: endOfToday,
+          },
+        },
+      });
+    });
+    
+    // 2. Get current week's bookings
+    const currentWeekBookings = await executeDbOperation(async () => {
+      return prisma.booking.count({
+        where: {
+          date: {
+            gte: startOfCurrentWeek,
+            lte: endOfCurrentWeek,
+          },
+        },
+      });
+    });
+    
+    // 3. Get previous week's bookings
+    const previousWeekBookings = await executeDbOperation(async () => {
+      return prisma.booking.count({
+        where: {
+          date: {
+            gte: startOfPreviousWeek,
+            lte: endOfPreviousWeek,
+          },
+        },
+      });
+    });
+    
+    // 4. Calculate weekly growth percentage
+    let weeklyGrowthPercentage = 0;
+    if (previousWeekBookings > 0) {
+      weeklyGrowthPercentage = ((currentWeekBookings - previousWeekBookings) / previousWeekBookings) * 100;
+    }
+    
+    // 5. Get monthly bookings count
+    const monthlyBookingsCount = await executeDbOperation(async () => {
+      return prisma.booking.count({
+        where: {
+          date: {
+            gte: startOfMonth,
+          },
+        },
+      });
+    });
+    
+    // 6. Get popular services
+    interface PopularService {
+      name: string;
+      count: number;
+    }
+    
+    let popularServices: PopularService[] = [];
+    try {
+      popularServices = await executeDbOperation(async () => {
+        // First check if there are any bookings
+        const bookingsExist = await prisma.booking.count() > 0;
+        
+        if (!bookingsExist) {
+          console.log('No bookings found, returning empty popular services');
+          return [];
+        }
+        
+        const services = await prisma.booking.groupBy({
+          by: ['serviceType'],
+          _count: {
+            serviceType: true,
+          },
+          orderBy: {
+            _count: {
+              serviceType: 'desc',
+            },
+          },
+          take: 5,
+        });
+        
+        return services.map(service => ({
+          name: service.serviceType,
+          count: service._count.serviceType,
+        }));
+      });
+    } catch (error) {
+      console.error('Error fetching popular services:', error);
+      // Return empty array instead of failing the whole request
+      popularServices = [] as PopularService[];
+    }
+    
+    // 7. Get booking trends by day of week
+    interface BookingTrend {
+      day: string;
+      count: number;
+    }
+    
+    let bookingTrends: BookingTrend[] = [];
+    try {
+      bookingTrends = await executeDbOperation(async () => {
+        // Get all bookings from the last 30 days
+        const thirtyDaysAgo = subDays(today, 30);
+        
+        const bookings = await prisma.booking.findMany({
+          where: {
+            date: {
+              gte: thirtyDaysAgo,
+            },
+          },
+          select: {
+            date: true,
+          },
+        });
+        
+        console.log(`Found ${bookings.length} bookings in the last 30 days`);
+        
+        // Map days in Mongolian
+        const dayMap: Record<number, string> = {
+          0: 'Ням',
+          1: 'Даваа',
+          2: 'Мягмар',
+          3: 'Лхагва',
+          4: 'Пүрэв',
+          5: 'Баасан',
+          6: 'Бямба',
+        };
+        
+        // Initialize counts for each day of the week
+        const dayCounts: Record<string, number> = {
+          'Даваа': 0,
+          'Мягмар': 0,
+          'Лхагва': 0,
+          'Пүрэв': 0,
+          'Баасан': 0,
+          'Бямба': 0,
+          'Ням': 0,
+        };
+        
+        // Count bookings by day of week
+        bookings.forEach(booking => {
+          try {
+            const date = new Date(booking.date);
+            const dayOfWeek = date.getDay();
+            const dayName = dayMap[dayOfWeek];
+            if (dayName) {
+              dayCounts[dayName]++;
+            }
+          } catch (err) {
+            console.error('Error processing booking date:', err, booking);
+          }
+        });
+        
+        // Convert to array format
+        return Object.entries(dayCounts).map(([day, count]) => ({
+          day,
+          count,
+        }));
+      });
+    } catch (error) {
+      console.error('Error fetching booking trends:', error);
+      // Return default data instead of failing
+      bookingTrends = [
+        { day: 'Даваа', count: 0 },
+        { day: 'Мягмар', count: 0 },
+        { day: 'Лхагва', count: 0 },
+        { day: 'Пүрэв', count: 0 },
+        { day: 'Баасан', count: 0 },
+        { day: 'Бямба', count: 0 },
+        { day: 'Ням', count: 0 },
+      ] as BookingTrend[];
+    }
+    
+    // 8. Get peak hours
+    interface PeakHour {
+      hour: string;
+      count: number;
+    }
+    
+    let peakHours: PeakHour[] = [];
+    try {
+      peakHours = await executeDbOperation(async () => {
+        // Get all bookings from the last 30 days
+        const thirtyDaysAgo = subDays(today, 30);
+        
+        const bookings = await prisma.booking.findMany({
+          where: {
+            date: {
+              gte: thirtyDaysAgo,
+            },
+          },
+          select: {
+            time: true,
+          },
+        });
+        
+        console.log(`Found ${bookings.length} bookings with time data`);
+        
+        // Initialize hour counts with default business hours
+        const hourCounts: Record<string, number> = {
+          '09:00': 0,
+          '10:00': 0,
+          '11:00': 0,
+          '12:00': 0,
+          '13:00': 0,
+          '14:00': 0,
+          '15:00': 0,
+          '16:00': 0,
+          '17:00': 0,
+        };
+        
+        // Count bookings by hour
+        bookings.forEach(booking => {
+          try {
+            if (booking.time && booking.time.includes(':')) {
+              // Extract hour from time string (assuming format like "09:00" or "14:30")
+              const hour = booking.time.split(':')[0] + ':00';
+              
+              if (hourCounts[hour] !== undefined) {
+                hourCounts[hour]++;
+              } else {
+                // Handle hours outside of predefined range
+                hourCounts[hour] = 1;
+              }
+            }
+          } catch (err) {
+            console.error('Error processing booking time:', err, booking);
+          }
+        });
+        
+        // Convert to array and sort by hour
+        return Object.entries(hourCounts)
+          .map(([hour, count]) => ({
+            hour,
+            count,
+          }))
+          .sort((a, b) => {
+            const hourA = parseInt(a.hour.split(':')[0]);
+            const hourB = parseInt(b.hour.split(':')[0]);
+            return hourA - hourB;
+          });
+      });
+    } catch (error) {
+      console.error('Error fetching peak hours:', error);
+      // Return default data instead of failing
+      peakHours = [
+        { hour: '09:00', count: 0 },
+        { hour: '10:00', count: 0 },
+        { hour: '11:00', count: 0 },
+        { hour: '12:00', count: 0 },
+        { hour: '13:00', count: 0 },
+        { hour: '14:00', count: 0 },
+        { hour: '15:00', count: 0 },
+        { hour: '16:00', count: 0 },
+        { hour: '17:00', count: 0 },
+      ] as PeakHour[];
+    }
+    
+    // 9. Calculate average wait time (mock data for now)
+    // In a real application, this would be calculated from actual wait times
+    const averageWaitTime = 25; // minutes
+    
+    // Log the data we're about to return
+    console.log('Analytics data ready to return:', {
+      todayBookings: todayBookingsCount,
+      weeklyGrowthPercentage,
+      monthlyBookings: monthlyBookingsCount,
+      popularServicesCount: popularServices.length,
+      bookingTrendsCount: bookingTrends.length,
+      peakHoursCount: peakHours.length,
+    });
+    
+    // Return all analytics data
+    return NextResponse.json({
+      averageWaitTime,
+      todayBookings: todayBookingsCount,
+      weeklyGrowthPercentage,
+      monthlyBookings: monthlyBookingsCount,
+      popularServices,
+      bookingTrends,
+      peakHours,
+    });
+  } catch (error: any) {
+    console.error('Error fetching booking analytics:', error);
+    console.error('Error stack:', error.stack);
+    
+    // Return a more detailed error response
+    return NextResponse.json(
+      { 
+        error: error.message || 'Failed to fetch booking analytics',
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+        timestamp: new Date().toISOString()
+      },
+      { status: 500 }
+    );
+  }
+}

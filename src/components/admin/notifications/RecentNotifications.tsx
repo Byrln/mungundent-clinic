@@ -9,7 +9,11 @@ import { useNotifications } from "@/context/NotificationsContext";
 import { NotificationType } from "./NotificationsPopover";
 import Link from "next/link";
 
-export default function RecentNotifications() {
+interface RecentNotificationsProps {
+  limit?: number;
+}
+
+export default function RecentNotifications({ limit = 5 }: RecentNotificationsProps) {
   const { notifications, markAsRead } = useNotifications();
   const [isLoading, setIsLoading] = useState(true);
   
@@ -22,8 +26,8 @@ export default function RecentNotifications() {
     return () => clearTimeout(timer);
   }, []);
   
-  // Get only the 5 most recent notifications
-  const recentNotifications = notifications.slice(0, 5);
+  // Get only the most recent notifications based on limit
+  const recentNotifications = notifications.slice(0, limit);
   
   // Get icon based on notification type
   const getNotificationIcon = (type: NotificationType) => {
@@ -84,7 +88,7 @@ export default function RecentNotifications() {
                 className={`flex items-start space-x-3 ${!notification.isRead ? 'bg-blue-50 -mx-3 p-3 rounded-md' : ''}`}
               >
                 <div className="flex-shrink-0 mt-1">
-                  {getNotificationIcon(notification.type)}
+                  {getNotificationIcon(notification.type as NotificationType)}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">

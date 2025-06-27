@@ -6,81 +6,81 @@
   :root {
     /* Base colors */
     --background: 0 0% 100%;  /* White #FFFFFF */
-    --foreground: 0 0% 20%;   /* Charcoal Gray #333333 */
+    --foreground: 222.2 84% 4.9%;   /* Charcoal Gray #333333 */
 
     /* Card colors */
     --card: 0 0% 100%;        /* White #FFFFFF */
-    --card-foreground: 0 0% 20%;  /* Charcoal Gray #333333 */
+    --card-foreground: 222.2 84% 4.9%;  /* Charcoal Gray #333333 */
  
     /* Popover colors */
     --popover: 0 0% 100%;     /* White #FFFFFF */
-    --popover-foreground: 0 0% 20%;  /* Charcoal Gray #333333 */
+    --popover-foreground: 222.2 84% 4.9%;  /* Charcoal Gray #333333 */
  
     /* Primary colors - Teal Blue */
-    --primary: 180 100% 36%;  /* #00B6B6 */
-    --primary-foreground: 0 0% 100%;  /* White #FFFFFF */
+    --primary: 222.2 47.4% 11.2%;  /* #00B6B6 */
+    --primary-foreground: 210 40% 98%;  /* White #FFFFFF */
  
     /* Secondary colors - Light Teal Tint */
-    --secondary: 180 59% 92%;  /* #E0F7F7 */
-    --secondary-foreground: 0 0% 20%;  /* Charcoal Gray #333333 */
+    --secondary: 210 40% 96.1%;  /* #E0F7F7 */
+    --secondary-foreground: 222.2 47.4% 11.2%;  /* Charcoal Gray #333333 */
  
     /* Muted colors - Light Gray */
-    --muted: 0 0% 96%;        /* #F5F5F5 */
-    --muted-foreground: 0 0% 45%;  /* Medium Gray */
+    --muted: 210 40% 96.1%;        /* #F5F5F5 */
+    --muted-foreground: 215.4 16.3% 46.9%;  /* Medium Gray */
  
     /* Accent colors - Sky Blue */
-    --accent: 190 100% 62%;   /* #3CDFFF */
-    --accent-foreground: 0 0% 20%;  /* Charcoal Gray #333333 */
+    --accent: 210 40% 96.1%;   /* #3CDFFF */
+    --accent-foreground: 222.2 47.4% 11.2%;  /* Charcoal Gray #333333 */
  
     /* Destructive/Error colors - Soft Red */
-    --destructive: 0 100% 71%;  /* #FF6B6B */
-    --destructive-foreground: 0 0% 100%;  /* White #FFFFFF */
+    --destructive: 0 84.2% 60.2%;  /* #FF6B6B */
+    --destructive-foreground: 210 40% 98%;  /* White #FFFFFF */
 
     /* Border, input, and ring colors */
-    --border: 0 0% 92%;       /* Light Gray #EAEAEA */
-    --input: 0 0% 92%;        /* Light Gray #EAEAEA */
-    --ring: 180 100% 36%;     /* Teal Blue #00B6B6 */
+    --border: 214.3 31.8% 91.4%;       /* Light Gray #EAEAEA */
+    --input: 214.3 31.8% 91.4%;        /* Light Gray #EAEAEA */
+    --ring: 222.2 84% 4.9%;     /* Teal Blue #00B6B6 */
  
-    --radius: 1rem;           /* Increased border radius for rounded buttons */
+    --radius: 0.5rem;           /* Increased border radius for rounded buttons */           --chart-1: 12 76% 61%;           --chart-2: 173 58% 39%;           --chart-3: 197 37% 24%;           --chart-4: 43 74% 66%;           --chart-5: 27 87% 67%;
   }
  
   .dark {
     /* Base colors - Dark mode */
-    --background: 0 0% 15%;    /* Dark Gray */
-    --foreground: 0 0% 95%;    /* Off White */
+    --background: 222.2 84% 4.9%;    /* Dark Gray */
+    --foreground: 210 40% 98%;    /* Off White */
  
     /* Card colors - Dark mode */
-    --card: 0 0% 20%;          /* Slightly lighter dark gray */
-    --card-foreground: 0 0% 95%;  /* Off White */
+    --card: 222.2 84% 4.9%;          /* Slightly lighter dark gray */
+    --card-foreground: 210 40% 98%;  /* Off White */
  
     /* Popover colors - Dark mode */
-    --popover: 0 0% 20%;       /* Slightly lighter dark gray */
-    --popover-foreground: 0 0% 95%;  /* Off White */
+    --popover: 222.2 84% 4.9%;       /* Slightly lighter dark gray */
+    --popover-foreground: 210 40% 98%;  /* Off White */
  
     /* Primary colors - Teal Blue (slightly brighter for dark mode) */
-    --primary: 180 100% 40%;   /* Brighter #00CCCC */
-    --primary-foreground: 0 0% 100%;  /* White */
+    --primary: 210 40% 98%;   /* Brighter #00CCCC */
+    --primary-foreground: 222.2 47.4% 11.2%;  /* White */
  
     /* Secondary colors - Darker Teal */
-    --secondary: 180 100% 20%;  /* Darker Teal */
-    --secondary-foreground: 0 0% 95%;  /* Off White */
+    --secondary: 217.2 32.6% 17.5%;  /* Darker Teal */
+    --secondary-foreground: 210 40% 98%;  /* Off White */
  
     /* Muted colors - Dark mode */
-    --muted: 0 0% 25%;         /* Muted dark gray */
-    --muted-foreground: 0 0% 70%;  /* Light gray */
+    --muted: 217.2 32.6% 17.5%;         /* Muted dark gray */
+    --muted-foreground: 215 20.2% 65.1%;  /* Light gray */
  
     /* Accent colors - Brighter Sky Blue for dark mode */
-    --accent: 190 100% 70%;    /* Brighter Sky Blue */
-    --accent-foreground: 0 0% 15%;  /* Dark Gray */
+    --accent: 217.2 32.6% 17.5%;    /* Brighter Sky Blue */
+    --accent-foreground: 210 40% 98%;  /* Dark Gray */
  
     /* Destructive/Error colors - Brighter Soft Red for dark mode */
-    --destructive: 0 100% 75%;  /* Brighter Soft Red */
-    --destructive-foreground: 0 0% 100%;  /* White */
+    --destructive: 0 62.8% 30.6%;  /* Brighter Soft Red */
+    --destructive-foreground: 210 40% 98%;  /* White */
  
     /* Border, input, and ring colors - Dark mode */
-    --border: 0 0% 30%;        /* Darker gray for borders */
-    --input: 0 0% 30%;         /* Darker gray for inputs */
-    --ring: 180 100% 40%;      /* Brighter Teal Blue */
+    --border: 217.2 32.6% 17.5%;        /* Darker gray for borders */
+    --input: 217.2 32.6% 17.5%;         /* Darker gray for inputs */
+    --ring: 212.7 26.8% 83.9%;      /* Brighter Teal Blue */      --chart-1: 220 70% 50%;      --chart-2: 160 60% 45%;      --chart-3: 30 80% 55%;      --chart-4: 280 65% 60%;      --chart-5: 340 75% 55%;
   }
 }
  

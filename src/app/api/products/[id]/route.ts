@@ -1,17 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma, executeDbOperation } from '@/lib/db';
 
-// GET /api/products/[id] - Get a single product by ID
+// GET /api/products/[id] - Get a specific product
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = params.id;
+    const { id } = params;
     
-    // Use executeDbOperation for better error handling and connection retry
     const product = await executeDbOperation(async () => {
-      return await prisma.product.findUnique({
+      return prisma.product.findUnique({
         where: { id },
       });
     });
@@ -25,9 +24,10 @@ export async function GET(
     
     return NextResponse.json(product);
   } catch (error: any) {
-    console.error('Error fetching product:', error);
+    console.error(`Error fetching product ${params.id}:`, error);
+    
     return NextResponse.json(
-      { error: 'Failed to fetch product', details: error.message },
+      { error: error.message || 'Failed to fetch product' },
       { status: 500 }
     );
   }
@@ -39,50 +39,44 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = params.id;
-    const body = await request.json();
-    const { name, description, imageUrl, price, inStock } = body;
+    const { id } = params;
+    const data = await request.json();
     
-    if (!name || !description || price === undefined) {
-      return NextResponse.json(
-        { error: 'Name, description, and price are required' },
-        { status: 400 }
-      );
-    }
-    
-    // Use executeDbOperation for better error handling and connection retry
-    const existingProduct = await executeDbOperation(async () => {
-      return await prisma.product.findUnique({
+    // Check if product exists
+    const productExists = await executeDbOperation(async () => {
+      return prisma.product.findUnique({
         where: { id },
       });
     });
     
-    if (!existingProduct) {
+    if (!productExists) {
       return NextResponse.json(
         { error: 'Product not found' },
         { status: 404 }
       );
     }
     
-    // Update product with executeDbOperation
+    // Update the product
     const updatedProduct = await executeDbOperation(async () => {
-      return await prisma.product.update({
+      return prisma.product.update({
         where: { id },
         data: {
-          title: name, // Make sure field names match the schema
-          description,
-          imageUrl,
-          price: parseFloat(price.toString()),
-          inStock: inStock !== undefined ? inStock : existingProduct.inStock,
+          title: data.title,
+          description: data.description,
+          price: data.price,
+          imageUrl: data.imageUrl,
+          inStock: data.inStock,
+          category: data.category,
         },
       });
     });
     
     return NextResponse.json(updatedProduct);
   } catch (error: any) {
-    console.error('Error updating product:', error);
+    console.error(`Error updating product ${params.id}:`, error);
+    
     return NextResponse.json(
-      { error: 'Failed to update product', details: error.message },
+      { error: error.message || 'Failed to update product' },
       { status: 500 }
     );
   }
@@ -94,25 +88,40 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = params.id;
+    const { id } = params;
     
-    // Check if product exists with executeDbOperation
-    const existingProduct = await executeDbOperation(async () => {
-      return await prisma.product.findUnique({
+    // Check if product exists
+    const productExists = await executeDbOperation(async () => {
+      return prisma.product.findUnique({
         where: { id },
       });
     });
     
-    if (!existingProduct) {
+    if (!productExists) {
       return NextResponse.json(
         { error: 'Product not found' },
         { status: 404 }
       );
     }
     
-    // Delete product with executeDbOperation
+    // Check if product is used in any orders
+    const orderItems = await executeDbOperation(async () => {
+      return prisma.orderItem.findMany({
+        where: { productId: id },
+        take: 1,
+      });
+    });
+    
+    if (orderItems.length > 0) {
+      return NextResponse.json(
+        { error: 'Cannot delete product that is used in orders' },
+        { status: 400 }
+      );
+    }
+    
+    // Delete the product
     await executeDbOperation(async () => {
-      return await prisma.product.delete({
+      return prisma.product.delete({
         where: { id },
       });
     });
@@ -122,9 +131,10 @@ export async function DELETE(
       { status: 200 }
     );
   } catch (error: any) {
-    console.error('Error deleting product:', error);
+    console.error(`Error deleting product ${params.id}:`, error);
+    
     return NextResponse.json(
-      { error: 'Failed to delete product', details: error.message },
+      { error: error.message || 'Failed to delete product' },
       { status: 500 }
     );
   }

@@ -20,10 +20,15 @@ import {
   ArrowRight,
   MessageCircle,
   Facebook,
+  Zap,
+  Shield,
+  Smile,
 } from "lucide-react";
 // Import our modular sections
 import ContactSection from "@/components/sections/ContactSection";
 import CTASection from "@/components/sections/CTASection";
+import FeaturedServices from "@/components/sections/FeaturedServices";
+import ServicesSection from "@/components/sections/ServicesSection";
 
 export default function Home() {
   // Animation variants
@@ -60,16 +65,16 @@ export default function Home() {
   // Refs for intersection observer
   const heroRef = useRef(null);
   const doctorRef = useRef(null);
-  const servicesRef = useRef(null);
+  const featuredRef = useRef<HTMLDivElement>(null);
   const testimonialsRef = useRef(null);
   const galleryRef = useRef(null);
   const blogRef = useRef(null);
-
+  
   // State to track if sections are in view
   const [isInView, setIsInView] = useState({
     hero: false,
     doctor: false,
-    services: false,
+    featured: false,
     testimonials: false,
     gallery: false,
     blog: false,
@@ -86,7 +91,7 @@ export default function Home() {
               ? "hero"
               : entry.target === doctorRef.current
               ? "doctor"
-              : entry.target === servicesRef.current
+              : entry.target === testimonialsRef.current
               ? "services"
               : entry.target === testimonialsRef.current
               ? "testimonials"
@@ -109,7 +114,7 @@ export default function Home() {
 
     if (heroRef.current) observer.observe(heroRef.current);
     if (doctorRef.current) observer.observe(doctorRef.current);
-    if (servicesRef.current) observer.observe(servicesRef.current);
+    if (featuredRef.current) observer.observe(featuredRef.current);
     if (testimonialsRef.current) observer.observe(testimonialsRef.current);
     if (galleryRef.current) observer.observe(galleryRef.current);
     if (blogRef.current) observer.observe(blogRef.current);
@@ -117,7 +122,7 @@ export default function Home() {
     return () => {
       if (heroRef.current) observer.unobserve(heroRef.current);
       if (doctorRef.current) observer.unobserve(doctorRef.current);
-      if (servicesRef.current) observer.unobserve(servicesRef.current);
+      if (testimonialsRef.current) observer.unobserve(testimonialsRef.current);
       if (testimonialsRef.current) observer.unobserve(testimonialsRef.current);
       if (galleryRef.current) observer.unobserve(galleryRef.current);
       if (blogRef.current) observer.unobserve(blogRef.current);
@@ -152,22 +157,52 @@ export default function Home() {
   // Services data
   const services = [
     {
-      title: "Хүүхдийн найрсаг эмчилгээ",
-      description: "Стрессгүй, тайван орчинд хийгддэг хүүхдийн шүдний эмчилгээ",
-      icon: <Baby className="text-dental-600" size={24} />,
-      link: "/services/children-dentistry",
+      title: "Шүдний үзлэг",
+      description: "Шүдний эрүүл мэндийн иж бүрэн үзлэг, оношилгоо",
+      icon: <Stethoscope className="h-10 w-10 text-white" />,
+      image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=2068&auto=format&fit=crop",
+      link: "/services/examination",
+      price: 50000,
+    },
+    {
+      title: "Шүдний цэвэрлэгээ",
+      description: "Мэргэжлийн шүдний цэвэрлэгээ, өнгө өөрчлөлт арилгах",
+      icon: <Sparkles className="h-10 w-10 text-white" />,
+      image: "https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80&w=1974&auto=format&fit=crop",
+      link: "/services/cleaning",
+      price: 80000,
     },
     {
       title: "Циркон бүрээс",
-      description: "Байгалийн мэт цагаан өнгө, бат бөх чанартай циркон бүрээс",
-      icon: <Stethoscope className="text-dental-600" size={24} />,
+      description: "Өндөр чанартай циркон бүрээс нь таны шүдийг сэргээж, байгалийн гоо үзэмжийг олгоно",
+      icon: <Smile className="h-10 w-10 text-white" />,
+      image: "https://images.unsplash.com/photo-1581585099522-f6ac2efe9b7c?q=80&w=2070&auto=format&fit=crop",
       link: "/services/zircon",
+      price: 450000,
     },
     {
-      title: "Бусад үйлчилгээ",
-      description: "Шүдний цэвэрлэгээ, цооролын эмчилгээ гэх мэт",
-      icon: <Sparkles className="text-dental-600" size={24} />,
-      link: "/services",
+      title: "Хүүхдийн эмчилгээ",
+      description: "Хүүхдэд ээлтэй орчин, тусгай арга барилаар хүүхдийн шүдний эрүүл мэндийг хамгаална",
+      icon: <Baby className="h-10 w-10 text-white" />,
+      image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=2070&auto=format&fit=crop",
+      link: "/services/children-dentistry",
+      price: 40000,
+    },
+    {
+      title: "Шүдний ломбо",
+      description: "Орчин үеийн материал ашиглан шүдний цооролтыг засаж, шүдний бүтцийг сэргээнэ",
+      icon: <Zap className="h-10 w-10 text-white" />,
+      image: "https://images.unsplash.com/photo-1606265752439-1f18756aa8ed?q=80&w=2070&auto=format&fit=crop",
+      link: "/services/filling",
+      price: 120000,
+    },
+    {
+      title: "Шүдний цайруулалт",
+      description: "Мэргэжлийн шүдний цайруулалт, гоо сайхны үйлчилгээ",
+      icon: <Sparkles className="h-10 w-10 text-white" />,
+      image: "https://images.unsplash.com/photo-1571772996211-2f02974a9f91?q=80&w=2070&auto=format&fit=crop",
+      link: "/services/whitening",
+      price: 250000,
     },
   ];
 
@@ -192,7 +227,37 @@ export default function Home() {
       date: "2023-11-05",
     },
   ];
-
+ // Map services to featured services
+ const featuredServices = [
+  {
+    title: "Шүдний цэвэрлэгээ",
+    description: "Мэргэжлийн шүдний цэвэрлэгээ нь шүдний чулуу, өнгө өөрчлөлтийг арилгаж, эрүүл буйлыг хадгалахад тусална.",
+    icon: <Sparkles className="h-10 w-10 text-dental-500" />,
+    image: "https://images.unsplash.com/photo-1606811971618-4486d14f3f99?q=80&w=1974&auto=format&fit=crop",
+    link: "/services/cleaning",
+  },
+  {
+    title: "Циркон бүрээс",
+    description: "Өндөр чанартай циркон бүрээс нь таны шүдийг сэргээж, байгалийн гоо үзэмжийг олгоно.",
+    icon: <Smile className="h-10 w-10 text-dental-500" />,
+    image: "https://images.unsplash.com/photo-1581585099522-f6ac2efe9b7c?q=80&w=2070&auto=format&fit=crop",
+    link: "/services/zircon",
+  },
+  {
+    title: "Хүүхдийн эмчилгээ",
+    description: "Хүүхдэд ээлтэй орчин, тусгай арга барилаар хүүхдийн шүдний эрүүл мэндийг хамгаална.",
+    icon: <Shield className="h-10 w-10 text-dental-500" />,
+    image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=2070&auto=format&fit=crop",
+    link: "/services/children-dentistry",
+  },
+  {
+    title: "Шүдний ломбо",
+    description: "Орчин үеийн материал ашиглан шүдний цооролтыг засаж, шүдний бүтцийг сэргээнэ.",
+    icon: <Zap className="h-10 w-10 text-dental-500" />,
+    image: "https://images.unsplash.com/photo-1606265752439-1f18756aa8ed?q=80&w=2070&auto=format&fit=crop",
+    link: "/services/filling",
+  },
+];
   // Gallery data
   const galleryImages = [
     {
@@ -287,6 +352,7 @@ export default function Home() {
 
   return (
     <>
+
       {/* 1. Hero Section */}
       <section
         id="hero"
@@ -504,70 +570,17 @@ export default function Home() {
           </div>
         </div>
       </section>
+      
 
-      {/* 3. Our Services Overview */}
-      <section
-        id="services"
-        ref={servicesRef}
-        className="py-20 md:py-32 bg-dental-50"
-      >
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-16">
-            <div className="inline-block px-4 py-1 mb-4 rounded-full bg-dental-100 text-dental-600 font-medium text-sm">
-              Үйлчилгээ
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-dental-800">
-              Бидний үйлчилгээ
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Бид хүүхэд, насанд хүрэгчдэд зориулсан шүдний иж бүрэн үйлчилгээг
-              үзүүлж байна.
-            </p>
-          </div>
+      {/* Featured Services Section */}
+      <div ref={featuredRef}>
+        <FeaturedServices
+          services={featuredServices}
+          isInView={isInView.featured}
+        />
+      </div>
 
-          <motion.div
-            initial="hidden"
-            animate={isInView.services ? "visible" : "hidden"}
-            variants={staggerContainer}
-            className="grid md:grid-cols-3 gap-6"
-          >
-            {services.map((service, index) => (
-              <motion.div key={index} variants={scaleIn}>
-                <Card className="h-full hover:shadow-lg transition-shadow duration-300">
-                  <CardContent className="p-6">
-                    <div className="w-12 h-12 bg-dental-100 rounded-full flex items-center justify-center mb-4">
-                      {service.icon}
-                    </div>
-                    <h3 className="text-xl font-bold mb-2 text-dental-800">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4">{service.description}</p>
-                    <Link
-                      href={service.link}
-                      className="text-dental-600 font-medium inline-flex items-center hover:text-dental-700"
-                    >
-                      Дэлгэрэнгүй <ArrowRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <div className="text-center mt-12">
-            <Button asChild variant="outline">
-              <Link
-                href="/services"
-                className="flex items-center justify-center"
-              >
-                Бүх үйлчилгээг харах <ChevronRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Testimonials / Сэтгэгдэл */}
+      {/* Doctor Section */}
       <section
         id="testimonials"
         ref={testimonialsRef}

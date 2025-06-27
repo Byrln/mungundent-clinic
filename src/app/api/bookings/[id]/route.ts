@@ -107,18 +107,33 @@ export async function DELETE(
     });
     
     if (!existingBooking) {
+      console.log(`Booking with ID ${id} not found, returning success anyway`);
+      // Return success even if booking doesn't exist - idempotent delete
       return NextResponse.json(
-        { error: 'Booking not found' },
-        { status: 404 }
+        { message: 'Booking deleted successfully (not found)' },
+        { status: 200 }
       );
     }
     
     // Delete booking with enhanced error handling and connection management
-    await executeDbOperation(async () => {
-      return prisma.booking.delete({
-        where: { id },
+    try {
+      await executeDbOperation(async () => {
+        return prisma.booking.delete({
+          where: { id },
+        });
       });
-    });
+    } catch (deleteError: any) {
+      // If the error is P2025 (record not found), treat it as success
+      if (deleteError.code === 'P2025') {
+        console.log(`Booking with ID ${id} not found during delete operation, returning success anyway`);
+        return NextResponse.json(
+          { message: 'Booking deleted successfully (not found during delete)' },
+          { status: 200 }
+        );
+      }
+      // For other errors, rethrow
+      throw deleteError;
+    }
     
     return NextResponse.json(
       { message: 'Booking deleted successfully' },

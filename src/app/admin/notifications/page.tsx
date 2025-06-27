@@ -23,7 +23,6 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { useNotifications } from "@/context/NotificationsContext";
 import { Notification, NotificationType } from "@/components/admin/notifications/NotificationsPopover";
-import AddTestNotification from "@/components/admin/notifications/AddTestNotification";
 
 export default function NotificationsPage() {
   const { 
@@ -81,10 +80,10 @@ export default function NotificationsPage() {
     switch (type) {
       case "BOOKING":
         return <Calendar className="w-5 h-5 text-green-500" />;
-      case "ORDER":
-        return <ShoppingCart className="w-5 h-5 text-blue-500" />;
-      case "SYSTEM":
-        return <Clock className="w-5 h-5 text-yellow-500" />;
+      // case "ORDER":
+      //   return <ShoppingCart className="w-5 h-5 text-blue-500" />;
+      // case "SYSTEM":
+      //   return <Clock className="w-5 h-5 text-yellow-500" />;
       default:
         return <Clock className="w-5 h-5 text-gray-500" />;
     }
@@ -124,9 +123,6 @@ export default function NotificationsPage() {
               <SelectContent>
                 <SelectItem value="ALL">Бүх мэдэгдлүүд</SelectItem>
                 <SelectItem value="UNREAD">Уншаагүй</SelectItem>
-                <SelectItem value="BOOKING">Цаг захиалга</SelectItem>
-                <SelectItem value="ORDER">Захиалга</SelectItem>
-                <SelectItem value="SYSTEM">Систем</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -139,8 +135,6 @@ export default function NotificationsPage() {
             <RefreshCw className="w-4 h-4 mr-2" />
             Шинэчлэх
           </Button>
-          
-          <AddTestNotification />
           
           <Button 
             variant="outline" 
